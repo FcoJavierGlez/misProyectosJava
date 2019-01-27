@@ -1,5 +1,11 @@
+
+package barcos;
+
+import java.util.Scanner;
+
+
 /**
- * Juego de Hundir la flota @version 1.0
+ * Juego de Hundir la flota
  * 
  * 
  * Este juego trata de recrear el famoso juego de mesa de Hundir la flota haciendo uso de objetos.
@@ -11,16 +17,9 @@
  * 
  * @author Francisco Javier González Sabariego.
  * 
- * 
+ * @version 1.0  //  Fecha: 18/01/2019
  * 
  */
-
-package barcos;
-
-import java.util.Scanner;
-
-
-
 public class HundirLaFlota {
   public static void main(String[] args) {
     //Scanner:
@@ -138,6 +137,17 @@ public class HundirLaFlota {
     asignaPosiciónBarcosJ1(tablero1a, tablero1b, portaavionesJ1, acorazadoJ1, destructorJ1, cruceroJ1, fragataJ1, submarinoJ1);
     
     
+    //Pruebas disparos (bucle infinito para testear):
+    do {
+      
+      disparoJ2(tablero1a, tablero2b, portaavionesJ1, acorazadoJ1, destructorJ1, cruceroJ1, fragataJ1, submarinoJ1);
+      
+      imprimeTableroJ1(tablero1a, tablero1b);
+      
+      imprimeTableroJ2(tablero2a, tablero2b);
+      
+    } while(true);
+    
     
     
     
@@ -166,7 +176,7 @@ public class HundirLaFlota {
   
   
   
-  //#####################################---Métodos---#####################################\\
+  //#####################################     Métodos     #####################################\\
   
   
   
@@ -367,17 +377,16 @@ for (int i=0; i<=11; i++) {
         
         
         /*
-         * Una vez se ha imprimido el margen izquierdo del tablero2 toca imprimir el propio tablero.
+         * Una vez se ha imprimido el margen izquierdo del tablero1b toca imprimir el propio tablero.
          * 
-         * Para realizar esta operación imprimiremos la fila actual hasta la columna 10 correspondiendo a las coordenadas: [i][j-(j-1)]
-         * como la variable de control "j" comienza valiendo 10, no podemos empezar imprimiendo la columna 10, por tanto, lo que vamos
-         * a imprimir será el equivalente a la posición del valor "j" menos el mismo valor de "j" menos 1 ejemplo: [1][10-(10-1)]
+         * Para realizar esta operación imprimiremos la fila actual hasta la columna 10 correspondiendo a las coordenadas: [i][j-(10)]
+         * como la variable de control "j" comienza valiendo 11, no podemos empezar imprimiendo la columna 11, por tanto, lo que vamos
+         * a imprimir será el equivalente a la posición del valor "j" menos el mismo valor columnas que posee el tablero (10) ejemplo: [1][11-(10)]
          * de esta forma nos aseguramos que imprimiremos el tablero2 desde la columna 1 hasta la columna 10 del mismo.
-         */
-        
+         */     
         
         if (j>10 && j<21) {
-          System.out.print(tablero1b[i][j-(j-1)]);
+          System.out.print(tablero1b[i][j-(10)]);
         }
         
         
@@ -533,17 +542,16 @@ for (int i=0; i<=11; i++) {
         
         
         /*
-         * Una vez se ha imprimido el margen izquierdo del tablero2 toca imprimir el propio tablero.
+         * Una vez se ha imprimido el margen izquierdo del tablero2b toca imprimir el propio tablero.
          * 
-         * Para realizar esta operación imprimiremos la fila actual hasta la columna 10 correspondiendo a las coordenadas: [i][j-(j-1)]
-         * como la variable de control "j" comienza valiendo 10, no podemos empezar imprimiendo la columna 10, por tanto, lo que vamos
-         * a imprimir será el equivalente a la posición del valor "j" menos el mismo valor de "j" menos 1 ejemplo: [1][10-(10-1)]
+         * Para realizar esta operación imprimiremos la fila actual hasta la columna 10 correspondiendo a las coordenadas: [i][j-(10)]
+         * como la variable de control "j" comienza valiendo 11, no podemos empezar imprimiendo la columna 11, por tanto, lo que vamos
+         * a imprimir será el equivalente a la posición del valor "j" menos el mismo valor columnas que posee el tablero (10) ejemplo: [1][11-(10)]
          * de esta forma nos aseguramos que imprimiremos el tablero2 desde la columna 1 hasta la columna 10 del mismo.
-         */
-        
+         */ 
         
         if (j>10 && j<21) {
-          System.out.print(tablero2b[i][j-(j-1)]);
+          System.out.print(tablero2b[i][j-(10)]);
         }
         
         
@@ -814,7 +822,7 @@ for (int i=0; i<=11; i++) {
       
       for (int i=fila-1; i<=fila+1; i++) {
         
-        for (int k=columna-1; k<=(columna+barco.casillasBarco); k++) {      
+        for (int k=columna-1; k<=(columna+barco.casillasActuales); k++) {      
           
           comprueba += tablero[i][k];
           
@@ -826,7 +834,7 @@ for (int i=0; i<=11; i++) {
       
       for (int i=fila-1; i<=fila+1; i++) {
         
-        for (int k=columna+1; k>=(columna-barco.casillasBarco); k--) {
+        for (int k=columna+1; k>=(columna-barco.casillasActuales); k--) {
           
           comprueba += tablero[i][k];
           
@@ -838,7 +846,7 @@ for (int i=0; i<=11; i++) {
       
       for (int k=columna-1; k<=columna+1; k++) {
         
-        for (int i=fila-1; i<=(fila+barco.casillasBarco); i++) {
+        for (int i=fila-1; i<=(fila+barco.casillasActuales); i++) {
           
           comprueba += tablero[i][k];
           
@@ -850,7 +858,7 @@ for (int i=0; i<=11; i++) {
       
       for (int k=columna-1; k<=columna+1; k++) {
         
-        for (int i=fila+1; i>=(fila-barco.casillasBarco); i--) {
+        for (int i=fila+1; i>=(fila-barco.casillasActuales); i--) {
           
           comprueba += tablero[i][k];
           
@@ -913,7 +921,7 @@ for (int i=0; i<=11; i++) {
         
         for (int i=fila; i<=fila; i++) {
           
-          for (int k=columna; k<(columna+barco.casillasBarco); k++) {      
+          for (int k=columna; k<(columna+barco.casillasActuales); k++) {      
             
             tablero[i][k] ="B|";
             
@@ -925,7 +933,7 @@ for (int i=0; i<=11; i++) {
         
         for (int i=fila; i<=fila; i++) {
           
-          for (int k=columna; k>(columna-barco.casillasBarco); k--) {
+          for (int k=columna; k>(columna-barco.casillasActuales); k--) {
             
             tablero[i][k] ="B|";
             
@@ -937,7 +945,7 @@ for (int i=0; i<=11; i++) {
         
         for (int k=columna; k<=columna; k++) {
           
-          for (int i=fila; i<(fila+barco.casillasBarco); i++) {
+          for (int i=fila; i<(fila+barco.casillasActuales); i++) {
             
             tablero[i][k] ="B|";
             
@@ -949,7 +957,7 @@ for (int i=0; i<=11; i++) {
         
         for (int k=columna; k<=columna; k++) {
           
-          for (int i=fila; i>(fila-barco.casillasBarco); i--) {
+          for (int i=fila; i>(fila-barco.casillasActuales); i--) {
             
             tablero[i][k] ="B|";
             
@@ -966,14 +974,14 @@ for (int i=0; i<=11; i++) {
   
   
   /**
-   * A través de este método el Jugador 1 podrá ir introduciendos sus barcos en el tablero de juego. Este método hace uso de los siguientes métodos:
+   * A través de este método el Jugador 1 podrá ir introduciendo sus barcos en el tablero de juego. Este método hace uso de los siguientes métodos:
    * 
    * <ul>
    * <li>pideCoordenadaFila()</li>
    * <li>pideCoordenadaColumna()</li>
    * <li>transformaFila()</li>
    * <li>insertaBarco()</li>
-   * <li>imprimeTableroJ1()()</li>
+   * <li>imprimeTableroJ1()</li>
    * </ul>
    * 
    * @param tablero1a
@@ -1003,7 +1011,7 @@ for (int i=0; i<=11; i++) {
     
 
     
-    //########################---Turno del portaaviones---########################\\
+    //########################     PORTAAVIONES     ########################\\
     
     System.out.print("\n\nTurno del " + portaavionesJ1.nombreBarco + " que posee " + portaavionesJ1.getCasillas() + " casillas.");
     
@@ -1043,13 +1051,18 @@ for (int i=0; i<=11; i++) {
     //Si todo ha salido bien llamamos a la función "insertaBarco()" que guardará el barco en el array tablero correspondiente:
     insertaBarco(portaavionesJ1, tablero1a, fila, columna);
     
+    
+    //Guardamos las coordenadas de la casilla inicial:
+    portaavionesJ1.setCasillaInicial(fila, columna);
+    
+    
     //Volvemos a imprimir al tablero para mostrar al jugador el resultado:
     imprimeTableroJ1(tablero1a, tablero1b);
     
     
     
     
-    //########################---Turno del acorazado---########################\\
+    //########################     ACORAZADO     ########################\\
     
     System.out.print("\n\nTurno del " + acorazadoJ1.nombreBarco + " que posee " + acorazadoJ1.getCasillas() + " casillas.");
     
@@ -1089,13 +1102,18 @@ for (int i=0; i<=11; i++) {
     //Si todo ha salido bien llamamos a la función "insertaBarco()" que guardará el barco en el array tablero correspondiente:
     insertaBarco(acorazadoJ1, tablero1a, fila, columna);
     
+    
+    //Guardamos las coordenadas de la casilla inicial:
+    acorazadoJ1.setCasillaInicial(fila, columna);
+    
+    
     //Volvemos a imprimir al tablero para mostrar al jugador el resultado:
     imprimeTableroJ1(tablero1a, tablero1b);
     
     
     
     
-    //########################---Turno del destructor---########################\\
+    //########################     DESTRUCTOR     ########################\\
     
     System.out.print("\n\nTurno del " + destructorJ1.nombreBarco + " que posee " + destructorJ1.getCasillas() + " casillas.");
     
@@ -1135,13 +1153,18 @@ for (int i=0; i<=11; i++) {
     //Si todo ha salido bien llamamos a la función "insertaBarco()" que guardará el barco en el array tablero correspondiente:
     insertaBarco(destructorJ1, tablero1a, fila, columna);
     
+    
+    //Guardamos las coordenadas de la casilla inicial:
+    destructorJ1.setCasillaInicial(fila, columna);
+    
+    
     //Volvemos a imprimir al tablero para mostrar al jugador el resultado:
     imprimeTableroJ1(tablero1a, tablero1b);
     
     
     
 
-    //########################---Turno del crucero---########################\\
+    //########################     CRUCERO     ########################\\
     
     System.out.print("\n\nTurno del " + cruceroJ1.nombreBarco + " que posee " + cruceroJ1.getCasillas() + " casillas.");
     
@@ -1181,13 +1204,18 @@ for (int i=0; i<=11; i++) {
     //Si todo ha salido bien llamamos a la función "insertaBarco()" que guardará el barco en el array tablero correspondiente:
     insertaBarco(cruceroJ1, tablero1a, fila, columna);
     
+    
+    //Guardamos las coordenadas de la casilla inicial:
+    cruceroJ1.setCasillaInicial(fila, columna);
+    
+    
     //Volvemos a imprimir al tablero para mostrar al jugador el resultado:
     imprimeTableroJ1(tablero1a, tablero1b);
     
     
     
     
-    //########################---Turno de la fragata---########################\\
+    //########################     FRAGATA     ########################\\
     
     System.out.print("\n\nTurno de la " + fragataJ1.nombreBarco + " que posee " + fragataJ1.getCasillas() + " casillas.");
     
@@ -1227,13 +1255,18 @@ for (int i=0; i<=11; i++) {
     //Si todo ha salido bien llamamos a la función "insertaBarco()" que guardará el barco en el array tablero correspondiente:
     insertaBarco(fragataJ1, tablero1a, fila, columna);
     
+    
+    //Guardamos las coordenadas de la casilla inicial:
+    fragataJ1.setCasillaInicial(fila, columna);
+    
+    
     //Volvemos a imprimir al tablero para mostrar al jugador el resultado:
     imprimeTableroJ1(tablero1a, tablero1b);
     
     
     
 
-    //########################---Turno del submarino---########################\\
+    //########################     SUBMARINO     ########################\\
     
     System.out.print("\n\nTurno del " + submarinoJ1.nombreBarco + " que posee " + submarinoJ1.getCasillas() + " casillas.");
     
@@ -1273,6 +1306,11 @@ for (int i=0; i<=11; i++) {
     //Si todo ha salido bien llamamos a la función "insertaBarco()" que guardará el barco en el array tablero correspondiente:
     insertaBarco(submarinoJ1, tablero1a, fila, columna);
     
+    
+    //Guardamos las coordenadas de la casilla inicial:
+    submarinoJ1.setCasillaInicial(fila, columna);
+    
+    
     //Volvemos a imprimir al tablero para mostrar al jugador el resultado:
     imprimeTableroJ1(tablero1a, tablero1b);
     
@@ -1283,14 +1321,14 @@ for (int i=0; i<=11; i++) {
   
   
   /**
-   * A través de este método el Jugador 2 podrá ir introduciendos sus barcos en el tablero de juego. Este método hace uso de los siguientes métodos:
+   * A través de este método el Jugador 2 podrá ir introduciendo sus barcos en el tablero de juego. Este método hace uso de los siguientes métodos:
    * 
    * <ul>
    * <li>pideCoordenadaFila()</li>
    * <li>pideCoordenadaColumna()</li>
    * <li>transformaFila()</li>
    * <li>insertaBarco()</li>
-   * <li>imprimeTableroJ1()()</li>
+   * <li>imprimeTableroJ1()</li>
    * </ul>
    * 
    * @param tablero2a
@@ -1321,7 +1359,7 @@ for (int i=0; i<=11; i++) {
     
     
     
-    //########################---Turno del portaaviones---########################\\
+    //########################     PORTAAVIONES     ########################\\
     
     System.out.print("\n\nTurno del " + portaavionesJ2.nombreBarco + " que posee " + portaavionesJ2.getCasillas() + " casillas.");
     
@@ -1361,13 +1399,18 @@ for (int i=0; i<=11; i++) {
     //Si todo ha salido bien llamamos a la función "insertaBarco()" que guardará el barco en el array tablero correspondiente:
     insertaBarco(portaavionesJ2, tablero2a, fila, columna);
     
+    
+    //Guardamos las coordenadas de la casilla inicial:
+    portaavionesJ2.setCasillaInicial(fila, columna);
+    
+    
     //Volvemos a imprimir al tablero para mostrar al jugador el resultado:
     imprimeTableroJ2(tablero2a, tablero2b);
     
     
     
         
-    //########################---Turno del acorazado---########################\\
+    //########################     ACORAZADO     ########################\\
     
     System.out.print("\n\nTurno del " + acorazadoJ2.nombreBarco + " que posee " + acorazadoJ2.getCasillas() + " casillas.");
     
@@ -1408,13 +1451,17 @@ for (int i=0; i<=11; i++) {
     insertaBarco(acorazadoJ2, tablero2a, fila, columna);
     
     
+    //Guardamos las coordenadas de la casilla inicial:
+    acorazadoJ2.setCasillaInicial(fila, columna);
+    
+    
     //Volvemos a imprimir al tablero para mostrar al jugador el resultado:
     imprimeTableroJ2(tablero2a, tablero2b);
     
     
     
     
-    //########################---Turno del destructor---########################\\
+    //########################     DESTRUCTOR     ########################\\
     
     System.out.print("\n\nTurno del " + destructorJ2.nombreBarco + " que posee " + destructorJ2.getCasillas() + " casillas.");
     
@@ -1455,12 +1502,16 @@ for (int i=0; i<=11; i++) {
     insertaBarco(destructorJ2, tablero2a, fila, columna);
     
     
+    //Guardamos las coordenadas de la casilla inicial:
+    destructorJ2.setCasillaInicial(fila, columna);
+    
+    
     //Volvemos a imprimir al tablero para mostrar al jugador el resultado:
     imprimeTableroJ2(tablero2a, tablero2b);
     
     
     
-    //########################---Turno del crucero---########################\\
+    //########################     CRUCERO     ########################\\
     
     System.out.print("\n\nTurno del " + cruceroJ2.nombreBarco + " que posee " + cruceroJ2.getCasillas() + " casillas.");
     
@@ -1500,13 +1551,18 @@ for (int i=0; i<=11; i++) {
     //Si todo ha salido bien llamamos a la función "insertaBarco()" que guardará el barco en el array tablero correspondiente:
     insertaBarco(cruceroJ2, tablero2a, fila, columna);
     
+    
+    //Guardamos las coordenadas de la casilla inicial:
+    cruceroJ2.setCasillaInicial(fila, columna);
+    
+    
     //Volvemos a imprimir al tablero para mostrar al jugador el resultado:
     imprimeTableroJ2(tablero2a, tablero2b);
     
     
     
     
-    //########################---Turno de la fragata---########################\\
+    //########################     FRAGATA     ########################\\
     
     System.out.print("\n\nTurno de la " + fragataJ2.nombreBarco + " que posee " + fragataJ2.getCasillas() + " casillas.");
     
@@ -1546,13 +1602,18 @@ for (int i=0; i<=11; i++) {
     //Si todo ha salido bien llamamos a la función "insertaBarco()" que guardará el barco en el array tablero correspondiente:
     insertaBarco(fragataJ2, tablero2a, fila, columna);
     
+    
+    //Guardamos las coordenadas de la casilla inicial:
+    fragataJ2.setCasillaInicial(fila, columna);
+    
+    
     //Volvemos a imprimir al tablero para mostrar al jugador el resultado:
     imprimeTableroJ2(tablero2a, tablero2b);
     
     
     
 
-    //########################---Turno del submarino---########################\\
+    //########################     SUBMARINO     ########################\\
     
     System.out.print("\n\nTurno del " + submarinoJ2.nombreBarco + " que posee " + submarinoJ2.getCasillas() + " casillas.");
     
@@ -1592,6 +1653,11 @@ for (int i=0; i<=11; i++) {
     //Si todo ha salido bien llamamos a la función "insertaBarco()" que guardará el barco en el array tablero correspondiente:
     insertaBarco(submarinoJ2, tablero2a, fila, columna);
     
+    
+    //Guardamos las coordenadas de la casilla inicial:
+    submarinoJ2.setCasillaInicial(fila, columna);
+    
+    
     //Volvemos a imprimir al tablero para mostrar al jugador el resultado:
     imprimeTableroJ2(tablero2a, tablero2b);
     
@@ -1599,6 +1665,387 @@ for (int i=0; i<=11; i++) {
   }
   
   
+  /**
+   * Valida las coordenadas insertadas para lanzar un disparo. De esta forma evita disparar donde previamente se haya disparado.
+   * 
+   * @param tablero
+   * @param fila
+   * @param columna
+   * @return
+   */
+  public static boolean validaDisparo(String tablero[][], int fila, int columna) {
+    
+    if (tablero[fila][columna]=="_|" || tablero[fila][columna]=="B|") {
+      
+      return true;
+      
+    } else {
+      
+      return false;
+      
+    }
+    
+  }
   
+  
+  /**
+   * Método disparo para el Jugador 1.
+   * 
+   * Este método agrupa una serie de métodos, a continuación descritos, 
+   * y gestiona el proceso de disparo. Primero se piden las coordenadas y se verifican tanto las coordenadas como el disparo.
+   * <br>
+   * 
+   * A continuación se sobreescribe en el tablero enemigo el impacto, en caso de haber una casilla de barco se sobreescribe "X|" y en caso de no haberla
+   * se sobreescribe un "O|", del mismo modo se hace una copia en las mismas coordenadas en el tablero b del jugador para ver dónde ha disparado y con qué resultado.
+   * <br>
+   * 
+   * En caso de haber impactado, es decir, en caso de haber encontrado en el tablero del jugador contrario una casilla con el String "B|" además de sobreescribir, 
+   * como hemos mencionado anteriormente tanto el tablero principal del enemigo como el tablero secundario del jugador activo, debemos verificar cuál de los barcos
+   * enemigos hemos impacto y restarle una de sus casillas actuales, de tal forma que, cuando ese barco llegue a poseer cero casillas actuales active el booleano de hundido.
+   * <br>
+   * 
+   * Para el correcto funcionamiento de este método es necesario hacer uso de los siguientes métodos de la clase HundirLaFlota:
+   * 
+   * <ul>
+   * <li>pideCoordenadaFila()</li>
+   * <li>pideCoordenadaColumna()</li>
+   * <li>transformaFila()</li>
+   * <li>validaDisparo()</li>
+   * </ul>
+   * 
+   * 
+   * Además es necesario hacer uso de los siguientes métodos de la clase Barco:
+   * 
+   * <ul>
+   * <li>compruebaImpacto()</li>
+   * <li>tocado()</li>
+   * <li>mensajeHundido()</li>
+   * <li>setHaSalidoMensajeHundido()</li>
+   * </ul>
+   * 
+   * @param tablero2a
+   * @param tablero1b
+   * @param portaavionesJ2
+   * @param acorazadoJ2
+   * @param destructorJ2
+   * @param cruceroJ2
+   * @param fragataJ2
+   * @param submarinoJ2
+   */
+  public static void disparoJ1(String tablero2a[][], String tablero1b[][],
+      Barco portaavionesJ2, Barco acorazadoJ2, Barco destructorJ2, Barco cruceroJ2, Barco fragataJ2, Barco submarinoJ2) {
+    
+    int fila;
+    
+    int columna;
+    
+    
+    /*
+     * Solicitamos las coordenadas de disparo y lo validamos, si las coordenadas son erróneas o 
+     * el disparo se realiza sobre otro disparo anterior volvemos a solicitarlas.
+     */
+    
+    System.out.print("\n\nIndique las coordenadas del disparo:");
+    
+    do {
+      
+      fila = transformaFila(pideCoordenadaFila());
+    
+      columna = pideCoordenadaColumna();
+      
+    } while(!validaDisparo(tablero2a, fila, columna));
+    
+    
+    /*
+     * Una vez hemos validado que las coordenadas son correctas comprobamos si:
+     * 
+     *  -El disparo a impactado en agua: En ese caso sobreescribimos en el tablero del jugador enemigo el String "O|"
+     *                                   para mostrarle la ubicación del disparo. Igualmente guardamos en las
+     *                                   mismas coordenadas pero del tablero b del jugador activo el mismo String.
+     *                                   
+     *  -El disparo a tocado un barco:   En ese caso sobreescribimos en el tablero del jugador enemigo el String "X|"
+     *                                   para mostrarle la ubicación del disparo. Igualmente guardamos en las
+     *                                   mismas coordenadas pero del tablero b del jugador activo el mismo String.
+     *  
+     *  Además, en caso de haber impactado sobre un barco enemigo debemos verificar cual de todos ellos es el barco impactado
+     *  con la finalidad de reducir el total de sus casillas en uno, con el objetivo de que cuando sus casillas actuales lleguen
+     *  a ser cero el barco activará el booleano de que está hundido. Para esto último es necesario usar los métodos correspondientes
+     *  de la clase Barco.
+     */
+    
+    if (tablero2a[fila][columna]=="_|") {
+      
+      System.out.print("\n\nAGUA");
+      
+      tablero2a [fila][columna] = "O|";
+      
+      tablero1b [fila][columna] = "O|";
+      
+    } else if(tablero2a[fila][columna]=="B|") {
+      
+      System.out.print("\n\nTOCADO");
+      
+      tablero2a [fila][columna] = "X|";
+      
+      tablero1b [fila][columna] = "X|";
+      
+      if (portaavionesJ2.compruebaImpacto(fila, columna)) {
+        
+        portaavionesJ2.tocado();        
+        
+        if (portaavionesJ2.hundidoBarco && !portaavionesJ2.haSalidoMensajeHundido) {      //Si lo hundimos:
+          
+          portaavionesJ2.mensajeHundido();                                                //Imprimos el mensaje de que ha sido hundido.
+          
+          portaavionesJ2.setHaSalidoMensajeHundido();                                     //Y activamos el booleano de que este mensaje ya ha salido para que no se repita.
+          
+        }
+        
+      } else if (acorazadoJ2.compruebaImpacto(fila, columna)) { 
+        
+        acorazadoJ2.tocado();
+        
+        if (acorazadoJ2.hundidoBarco && !acorazadoJ2.haSalidoMensajeHundido) {            //Si lo hundimos:
+          
+          acorazadoJ2.mensajeHundido();                                                   //Imprimos el mensaje de que ha sido hundido.
+          
+          acorazadoJ2.setHaSalidoMensajeHundido();                                        //Y activamos el booleano de que este mensaje ya ha salido para que no se repita.
+          
+        }
+        
+      } else if (destructorJ2.compruebaImpacto(fila, columna)) {
+        
+        destructorJ2.tocado();
+        
+        if (destructorJ2.hundidoBarco && !destructorJ2.haSalidoMensajeHundido) {          //Si lo hundimos:
+          
+          destructorJ2.mensajeHundido();                                                  //Imprimos el mensaje de que ha sido hundido.
+          
+          destructorJ2.setHaSalidoMensajeHundido();                                       //Y activamos el booleano de que este mensaje ya ha salido para que no se repita.
+          
+        }
+        
+      } else if (cruceroJ2.compruebaImpacto(fila, columna)) {
+        
+        cruceroJ2.tocado();
+        
+        if (cruceroJ2.hundidoBarco && !cruceroJ2.haSalidoMensajeHundido) {                //Si lo hundimos:
+          
+          cruceroJ2.mensajeHundido();                                                     //Imprimos el mensaje de que ha sido hundido.
+          
+          cruceroJ2.setHaSalidoMensajeHundido();                                          //Y activamos el booleano de que este mensaje ya ha salido para que no se repita.
+          
+        }
+        
+      } else if (fragataJ2.compruebaImpacto(fila, columna)) {
+        
+        fragataJ2.tocado();
+        
+        if (fragataJ2.hundidoBarco && !fragataJ2.haSalidoMensajeHundido) {                //Si lo hundimos:
+          
+          fragataJ2.mensajeHundido();                                                     //Imprimos el mensaje de que ha sido hundido.
+          
+          fragataJ2.setHaSalidoMensajeHundido();                                          //Y activamos el booleano de que este mensaje ya ha salido para que no se repita.
+          
+        }
+        
+      } else if (submarinoJ2.compruebaImpacto(fila, columna)) {
+        
+        submarinoJ2.tocado();
+        
+        if (submarinoJ2.hundidoBarco && !submarinoJ2.haSalidoMensajeHundido) {            //Si lo hundimos:
+          
+          submarinoJ2.mensajeHundido();                                                   //Imprimos el mensaje de que ha sido hundido.
+          
+          submarinoJ2.setHaSalidoMensajeHundido();                                        //Y activamos el booleano de que este mensaje ya ha salido para que no se repita.
+          
+        }
+        
+      }
+      
+    }    
+    
+  }
+  
+  
+  
+  /**
+   * Método disparo para el Jugador 2.
+   * 
+   * Este método agrupa una serie de métodos, a continuación descritos, 
+   * y gestiona el proceso de disparo. Primero se piden las coordenadas y se verifican tanto las coordenadas como el disparo.
+   * <br>
+   * 
+   * A continuación se sobreescribe en el tablero enemigo el impacto, en caso de haber una casilla de barco se sobreescribe "X|" y en caso de no haberla
+   * se sobreescribe un "O|", del mismo modo se hace una copia en las mismas coordenadas en el tablero b del jugador para ver dónde ha disparado y con qué resultado.
+   * <br>
+   * 
+   * En caso de haber impactado, es decir, en caso de haber encontrado en el tablero del jugador contrario una casilla con el String "B|" además de sobreescribir, 
+   * como hemos mencionado anteriormente tanto el tablero principal del enemigo como el tablero secundario del jugador activo, debemos verificar cuál de los barcos
+   * enemigos hemos impacto y restarle una de sus casillas actuales, de tal forma que, cuando ese barco llegue a poseer cero casillas actuales active el booleano de hundido.
+   * <br>
+   * 
+   * Para el correcto funcionamiento de este método es necesario hacer uso de los siguientes métodos de la clase HundirLaFlota:
+   * 
+   * <ul>
+   * <li>pideCoordenadaFila()</li>
+   * <li>pideCoordenadaColumna()</li>
+   * <li>transformaFila()</li>
+   * <li>validaDisparo()</li>
+   * </ul>
+   * 
+   * 
+   * Además es necesario hacer uso de los siguientes métodos de la clase Barco:
+   * 
+   * <ul>
+   * <li>compruebaImpacto()</li>
+   * <li>tocado()</li>
+   * <li>mensajeHundido()</li>
+   * <li>setHaSalidoMensajeHundido()</li>
+   * </ul>
+   * 
+   * @param tablero1a
+   * @param tablero2b
+   * @param portaavionesJ1
+   * @param acorazadoJ1
+   * @param destructorJ1
+   * @param cruceroJ1
+   * @param fragataJ1
+   * @param submarinoJ1
+   */
+  public static void disparoJ2(String tablero1a[][], String tablero2b[][],
+      Barco portaavionesJ1, Barco acorazadoJ1, Barco destructorJ1, Barco cruceroJ1, Barco fragataJ1, Barco submarinoJ1) {
+    
+    int fila;
+    
+    int columna;
+    
+    
+    /*
+     * Solicitamos las coordenadas de disparo y lo validamos, si las coordenadas son erróneas o 
+     * el disparo se realiza sobre otro disparo anterior volvemos a solicitarlas.
+     */
+    
+    System.out.print("\n\nIndique las coordenadas del disparo:");
+    
+    do {
+      
+      fila = transformaFila(pideCoordenadaFila());
+    
+      columna = pideCoordenadaColumna();
+      
+    } while(!validaDisparo(tablero1a, fila, columna));
+    
+    
+    /*
+     * Una vez hemos validado que las coordenadas son correctas comprobamos si:
+     * 
+     *  -El disparo a impactado en agua: En ese caso sobreescribimos en el tablero del jugador enemigo el String "O|"
+     *                                   para mostrarle la ubicación del disparo. Igualmente guardamos en las
+     *                                   mismas coordenadas pero del tablero b del jugador activo el mismo String.
+     *                                   
+     *  -El disparo a tocado un barco:   En ese caso sobreescribimos en el tablero del jugador enemigo el String "X|"
+     *                                   para mostrarle la ubicación del disparo. Igualmente guardamos en las
+     *                                   mismas coordenadas pero del tablero b del jugador activo el mismo String.
+     *  
+     *  Además, en caso de haber impactado sobre un barco enemigo debemos verificar cual de todos ellos es el barco impactado
+     *  con la finalidad de reducir el total de sus casillas en uno, con el objetivo de que cuando sus casillas actuales lleguen
+     *  a ser cero el barco activará el booleano de que está hundido. Para esto último es necesario usar los métodos correspondientes
+     *  de la clase Barco.
+     */
+    
+    if (tablero1a[fila][columna]=="_|") {
+      
+      System.out.print("\n\nAGUA");
+      
+      tablero1a [fila][columna] = "O|";
+      
+      tablero2b [fila][columna] = "O|";
+      
+    } else if(tablero1a[fila][columna]=="B|") {
+      
+      System.out.print("\n\nTOCADO");
+      
+      tablero1a [fila][columna] = "X|";
+      
+      tablero2b [fila][columna] = "X|";
+      
+      if (portaavionesJ1.compruebaImpacto(fila, columna)) {
+        
+        portaavionesJ1.tocado();
+        
+        if (portaavionesJ1.hundidoBarco && !portaavionesJ1.haSalidoMensajeHundido) {      //Si lo hundimos:
+          
+          portaavionesJ1.mensajeHundido();                                                //Imprimos el mensaje de que ha sido hundido.
+          
+          portaavionesJ1.setHaSalidoMensajeHundido();                                     //Y activamos el booleano de que este mensaje ya ha salido para que no se repita.
+          
+        }
+        
+      } else if (acorazadoJ1.compruebaImpacto(fila, columna)) {
+        
+        acorazadoJ1.tocado();
+        
+        if (acorazadoJ1.hundidoBarco && !acorazadoJ1.haSalidoMensajeHundido) {            //Si lo hundimos:
+          
+          acorazadoJ1.mensajeHundido();                                                   //Imprimos el mensaje de que ha sido hundido.
+          
+          acorazadoJ1.setHaSalidoMensajeHundido();                                        //Y activamos el booleano de que este mensaje ya ha salido para que no se repita.
+          
+        }
+        
+      } else if (destructorJ1.compruebaImpacto(fila, columna)) {
+        
+        destructorJ1.tocado();
+        
+        if (destructorJ1.hundidoBarco && !destructorJ1.haSalidoMensajeHundido) {          //Si lo hundimos:
+          
+          destructorJ1.mensajeHundido();                                                  //Imprimos el mensaje de que ha sido hundido.
+          
+          destructorJ1.setHaSalidoMensajeHundido();                                       //Y activamos el booleano de que este mensaje ya ha salido para que no se repita.
+          
+        }
+        
+      } else if (cruceroJ1.compruebaImpacto(fila, columna)) {
+        
+        cruceroJ1.tocado();
+        
+        if (cruceroJ1.hundidoBarco && !cruceroJ1.haSalidoMensajeHundido) {                //Si lo hundimos:
+          
+          cruceroJ1.mensajeHundido();                                                     //Imprimos el mensaje de que ha sido hundido.
+          
+          cruceroJ1.setHaSalidoMensajeHundido();                                          //Y activamos el booleano de que este mensaje ya ha salido para que no se repita.
+          
+        }
+        
+      } else if (fragataJ1.compruebaImpacto(fila, columna)) {
+        
+        fragataJ1.tocado();
+        
+        if (fragataJ1.hundidoBarco && !fragataJ1.haSalidoMensajeHundido) {                //Si lo hundimos:
+          
+          fragataJ1.mensajeHundido();                                                     //Imprimos el mensaje de que ha sido hundido.
+          
+          fragataJ1.setHaSalidoMensajeHundido();                                          //Y activamos el booleano de que este mensaje ya ha salido para que no se repita.
+          
+        }
+        
+      } else if (submarinoJ1.compruebaImpacto(fila, columna)) {
+        
+        submarinoJ1.tocado();
+        
+        if (submarinoJ1.hundidoBarco && !submarinoJ1.haSalidoMensajeHundido) {            //Si lo hundimos:
+          
+          submarinoJ1.mensajeHundido();                                                   //Imprimos el mensaje de que ha sido hundido.
+          
+          submarinoJ1.setHaSalidoMensajeHundido();                                        //Y activamos el booleano de que este mensaje ya ha salido para que no se repita.
+          
+        }
+        
+      }
+      
+    }    
+    
+  }
   
 }

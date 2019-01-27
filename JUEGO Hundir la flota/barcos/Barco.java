@@ -1,3 +1,6 @@
+
+package barcos;
+
 /**
  * Clase Barco:
  * 
@@ -7,31 +10,36 @@
  * 
  * <ul>
  * <li>El constructor "Barco" que acepta por parámetros: el nombre del tipo de barco, las casillas que lo componen y el jugador al que pertenece. </li>
- * <li></li>
+ * <li>getCasillas()</li>
+ * <li>getVerticalidad()</li>
+ * <li>setVerticalidad()</li>
+ * <li>setPosicionInvertida()</li>
+ * <li>setCasillaInicial()</li>
+ * <li>tocado()</li>
  * </ul>
  * 
  * 
  * @author Francisco Javier González Sabariego
  * 
- * @version 1.0
+ * @version 1.0  // Fecha: 18/01/2019
  * 
- * 18/01/2019
+ * 
  */
-
-package barcos;
-
-
 public class Barco {
   
   String nombreBarco;
   
-  protected int casillasBarco;
+  protected int casillasIniciales;
+  
+  protected int casillasActuales;
   
   protected boolean verticalBarco=false;
   
   protected boolean posicionInvertida=false;
   
   protected boolean hundidoBarco;
+  
+  protected boolean haSalidoMensajeHundido;
   
   int numeroJugador;
   
@@ -57,11 +65,15 @@ public class Barco {
     
     nombreBarco=nombre;
     
-    casillasBarco=casillas;
+    casillasIniciales=casillas;
+    
+    casillasActuales=casillasIniciales;
     
     hundidoBarco=false;
     
     numeroJugador=jugador;
+    
+    haSalidoMensajeHundido=false;
     
   }
   
@@ -73,7 +85,7 @@ public class Barco {
    */
   public int getCasillas() {
     
-    return this.casillasBarco;
+    return this.casillasActuales;
     
   }
   
@@ -138,26 +150,140 @@ public class Barco {
    */
   public void tocado() {
     
-    this.casillasBarco-=1;
+    this.casillasActuales-=1;
     
-    if (this.casillasBarco==0) {
+    if (this.casillasActuales==0) {
       
       this.hundidoBarco=true;
       
     }
     
   }
-
   
-  public String mensajeTocadoHundido() {
+  
+  /**
+   * Comprueba si se ha impactado a una instanacia de la clase Barco.<br><br>
+   * 
+   * Introducimos como parámetros las coordenadas de lanzamiento y comprobamos si coincide con la ubicación del barco.<br><br>
+   * 
+   * Para ello, comprobamos la posición del barco (horizontal o vertical) y si a la hora de ser insertado en el tablero de juego
+   * se ha insertado en sentido normal (izquierda - derecha || arriba-abajo) o a la inversa (dercha-izquierda || abajo-arriba).
+   * Después, partiendo de las coordenadas de la casilla inicial (la que insertó el usuario como la primera casilla del barco en el tablero)
+   * empezamos a contar con un doble bucle for incrementando o reduciendo o bien el valor del eje de las columnas (si está en horizontal)
+   * o bien el eje de las filas (si el barco está en vertical), de tal forma que tras cada incremento o reducción se hace una comprobación
+   * y si las coordenadas resultantes son iguales a las coordenadas del disparo ése es el barco que habrá sido tocado.<br><br>
+   * 
+   * En caso de impacto retornamos verdadero. En caso contrario falso.
+   * 
+   * @param fila
+   * @param columna
+   * @return
+   */
+  public boolean compruebaImpacto(int fila, int columna) {
     
-    if (this.hundidoBarco) {
+    
+    int filaInicial = this.casillaInicial[0][0];
+    
+    int columnaInicial = this.casillaInicial[0][1];
+    
+    boolean salida = false;
+    
+    
+    if (!this.getVerticalidad() && !this.posicionInvertida) {             //Hace la comprobación del impacto si el barco está horizontal y se lee de izquierda a derecha:
       
-      return "El " + this.nombreBarco + " del Jugador " + this.numeroJugador + " está hundido.";
+      for (int i=filaInicial; i<=filaInicial; i++) {
+        
+        for (int k=columnaInicial; k<=(columnaInicial+this.casillasIniciales-1); k++) {      
+          
+          if (fila==i && columna==k) {
+            
+            return true;
+            
+          }
+          
+        }
+        
+      }
+      
+    } else if(!this.getVerticalidad() && this.posicionInvertida) {        //Hace la comprobación del impacto si el barco está horizontal y se lee de derecha a izquierda:
+      
+      for (int i=filaInicial; i<=filaInicial; i++) {
+        
+        for (int k=columnaInicial; k>=(columnaInicial-this.casillasIniciales-1); k--) {
+          
+          if (fila==i && columna==k) {
+            
+            return true;
+            
+          }
+          
+        }
+        
+      } 
+      
+    } else if (this.getVerticalidad() && !this.posicionInvertida) {       //Hace la comprobación del impacto si el barco está vertical y se lee de arriba a abajo:
+      
+      for (int k=columnaInicial; k<=columnaInicial; k++) {
+        
+        for (int i=filaInicial; i<=(filaInicial+this.casillasIniciales-1); i++) {
+          
+          if (fila==i && columna==k) {
+            
+            return true;
+            
+          }
+          
+        }
+        
+      } 
+      
+    } else {                                                              //Hace la comprobación del impacto si el barco está vertical y se lee de abajo a arriba:
+      
+      for (int k=columnaInicial; k<=columnaInicial; k++) {
+        
+        for (int i=filaInicial; i>=(filaInicial-this.casillasIniciales-1); i--) {
+          
+          if (fila==i && columna==k) {
+            
+            return true;
+            
+          }
+          
+        }
+        
+      } 
       
     }
     
-    return "Tocado.";
+    return false;
+    
+  }
+  
+  
+  /**
+   * Este método pone en verdadero el booleano que indica si ya ha salido el mensaje de que el barco está hundido.
+   */
+  public void setHaSalidoMensajeHundido() {
+    
+    this.haSalidoMensajeHundido=true;
+    
+  }
+  
+  
+  /**
+   * Muestra el mensaje de que el barco está hundido.
+   */
+  public void mensajeHundido() {
+    
+    if (this.hundidoBarco && this.nombreBarco!="Fragata") {
+      
+      System.out.print("\n\nEnhorabuena!! Has hundido el " + this.nombreBarco + " del Jugador " + this.numeroJugador + ".");
+      
+    } else {
+      
+      System.out.print("\n\nEnhorabuena!! Has hundido la " + this.nombreBarco + " del Jugador " + this.numeroJugador + ".");
+      
+    }
     
   }
   
