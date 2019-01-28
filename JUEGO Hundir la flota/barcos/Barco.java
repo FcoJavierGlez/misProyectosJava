@@ -16,6 +16,10 @@ package barcos;
  * <li>setPosicionInvertida()</li>
  * <li>setCasillaInicial()</li>
  * <li>tocado()</li>
+ * <li>compruebaImpacto()</li>
+ * <li>setHaSalidoMensaje()</li>
+ * <li>mensajeHundido()</li>
+ * <li>setReinicia()</li>
  * </ul>
  * 
  * 
@@ -186,8 +190,6 @@ public class Barco {
     
     int columnaInicial = this.casillaInicial[0][1];
     
-    boolean salida = false;
-    
     
     if (!this.getVerticalidad() && !this.posicionInvertida) {             //Hace la comprobación del impacto si el barco está horizontal y se lee de izquierda a derecha:
       
@@ -284,6 +286,24 @@ public class Barco {
       System.out.print("\n\nEnhorabuena!! Has hundido la " + this.nombreBarco + " del Jugador " + this.numeroJugador + ".");
       
     }
+    
+  }
+  
+  
+  /**
+   * En caso de querer reiniciar la partida este método devuelve el estado original de la instancia seleccionada.
+   */
+  public void setReinicia() {
+    
+    this.verticalBarco = false;
+    
+    this.posicionInvertida = false;
+    
+    this.haSalidoMensajeHundido = false;
+    
+    this.casillasActuales = casillasIniciales;
+    
+    this.hundidoBarco = false;
     
   }
   

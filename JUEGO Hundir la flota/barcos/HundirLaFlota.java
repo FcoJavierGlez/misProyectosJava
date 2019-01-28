@@ -8,22 +8,56 @@ import java.util.Scanner;
  * Juego de Hundir la flota
  * 
  * 
- * Este juego trata de recrear el famoso juego de mesa de Hundir la flota haciendo uso de objetos.
+ * Este juego trata de recrear el famoso juego de mesa de Hundir la flota haciendo uso de objetos.<br><br>
  * 
- * Para su correcto funcionamiento es necesario utilizar la clase Barco de la cuál se instanciarán los barcos que usaremos para jugar.
+ * Para su correcto funcionamiento es necesario utilizar la clase Barco de la cuál se instanciarán los barcos que usaremos para jugar.<br><br>
+ * 
+ * Para su correcto funcionamiento esta clase hace uso de los siguientes métodos:
+ * <ul>
+ * <li>mensajeInicio()</li>
+ * <li>reiniciaTableros()</li>
+ * <li>imprimeTableroJ1()</li>
+ * <li>imprimeTableroJ2()</li>
+ * <li>compruebaFila()</li>
+ * <li>compruebaColumna()</li>
+ * <li>transformaFila()</li>
+ * <li>pideCoordenadaFila()</li>
+ * <li>pideCoordenadaColumna()</li>
+ * <li>compruebaPosicionBarco()</li>
+ * <li>insertaBarco()</li>
+ * <li>asignaPosicionBarcosJ1()</li>
+ * <li>asignaPosicionBarcosJ2()</li>
+ * <li>validaDisparo()</li>
+ * <li>disparoJ1()</li>
+ * <li>disparoJ2()</li>
+ * <li>tiradaAleatoria()</li>
+ * <li>preguntaReinicio()</li>
+ * <li>reiniciarJuego()</li>
+ * <li>esperaSegundos()</li>
+ * </ul>
+ * 
+ * Además es necesario importar la clase Barco para crear 6 instancias para el Jugador 1 y otras 6 para el Jugador 2 que harán uso de sus respectivos métodos 
+ * que están descritos en el JavaDoc de la clase Barco.<br><br>
+ * 
+ * 
+ * Posibles futuras mejoras:
+ * <ul>
+ * <li>El empleo de un método que borre la pantalla en vez de usar una susesión de saltos de línea para desplazar los tableros impresos en pantalla.</li>
+ * <li>Implementar un sistema de juego para 1 jugador, ello implica crear una IA capaz de jugar contra el usuario.</li>
+ * <li>Considero interesante ser capaz de implementar un sistema de juego en red, aunque sea a través de LAN, para que los jugadores no tuvieran que usar el mismo monitor a riesgo de ver el tablero del rival.</li>
+ * <li>Finalmente, me gustaría ser capaz de dotar a este juego de una interfez gráfica, aunque sea sencilla.</li>
+ * </ul>
  * 
  * 
  * Este juego ha sido creado por:
  * 
  * @author Francisco Javier González Sabariego.
  * 
- * @version 1.0  //  Fecha: 18/01/2019
+ * @version 1.0  //  Fecha: 28/01/2019
  * 
  */
 public class HundirLaFlota {
   public static void main(String[] args) {
-    //Scanner:
-    Scanner s = new Scanner(System.in);
     
     
     //Variables:
@@ -35,12 +69,19 @@ public class HundirLaFlota {
     
     String [][] tablero2b = new String [12][12];          //Tablero de impactos que ha hecho el jugador 2 en el tablero del jugador 1.
     
-    int coordenadaFila;                                   //Almacena la coordenada de las filas una vez ha sido pasado
+    int numeroJugadores = 2;                              //Variable que define el número de jugadores, en principio valdrá 2 puesto que no he programado el modo 1 jugador.
     
-    int coordenadaColumna;
+    int tiradaAzar;                                       //Variable que designa qué jugador empieza el juego si: <50 empieza Jugador 1, si >50 empieza Jugador 2.    
     
+    boolean turnoJ1 = false;                                
     
+    boolean turnoJ2 = false;
     
+    boolean inicioJuego = true;
+    
+    boolean hayGanador = false;
+    
+    boolean reiniciarJuego = false; 
     
     
     
@@ -83,95 +124,284 @@ public class HundirLaFlota {
     
     
     
-    //Empieza el cuerpo del programa (ejecución)\\
+    //################################     PROGRAMA     ################################\\
+    
+    
+    
+    
+    
+    //Iniciamos antes de nada dando un valor a cada casilla de los tableros del juego:
+    
+    reiniciaTableros(tablero1a, tablero1b, tablero2a, tablero2b);
+    
     
     
     //Mensaje de inicio:
     
     mensajeInicio();
     
+    System.out.print("\n\nBienvenido al juego de hundir la flota.");
+    
     
     
     //Menu (pendiente de realizar):
     
+//    do {
+//      
+//    } while();
     
     
     
-    //Reinicio del tablero:
+    //Modo 1 jugador:    //Pendiente de realizar
     
-    reiniciaTableros(tablero1a, tablero1b, tablero2a, tablero2b);
-    
-    
-    //Imprime tablero jugador 1:
-    
-    imprimeTableroJ1(tablero1a, tablero1b);
-    
-    
-    
-    //Imprime tablero jugador 2:
-    
-    //imprimeTableroJ2(tablero2a, tablero2b);
-    
-    
-    
-    //Inserta fila:
-    
-//    coordenadaFila = transformaFila(pideCoordenadaFila());
-//    
-//    System.out.println(coordenadaFila);
-    
-    
-    
-    //Inserta columna:
-    
-//    coordenadaColumna = pideCoordenadaColumna();
-//    
-//    System.out.println(coordenadaColumna);
-    
-    
-    
-    
-    //Pruebas de ubicación barcos:
-    //System.out.print(compruebaPosicionBarco(portaavionesJ1, tablero1a, coordenadaFila, coordenadaColumna));
-    
-    asignaPosiciónBarcosJ1(tablero1a, tablero1b, portaavionesJ1, acorazadoJ1, destructorJ1, cruceroJ1, fragataJ1, submarinoJ1);
-    
-    
-    //Pruebas disparos (bucle infinito para testear):
-    do {
+    if (numeroJugadores==1) {
       
-      disparoJ2(tablero1a, tablero2b, portaavionesJ1, acorazadoJ1, destructorJ1, cruceroJ1, fragataJ1, submarinoJ1);
+    }
+    
+    
+    
+        
+    //Modo 2 jugadores:
+    
+    if (numeroJugadores==2) {
       
-      imprimeTableroJ1(tablero1a, tablero1b);
+      //Mientras no haya ganador se repite el bucle mediente el cual se van turnando los jugadores:
+      while (!hayGanador) {        
+        
+        
+        
+        //Si tras terminar una partida se decide reiniciar el juego::
+        if (reiniciarJuego) {
+          
+          
+          //Llamamos al método reiniciarJuego():
+          reiniciarJuego(tablero1a, tablero1b, tablero2a, tablero2b, 
+              portaavionesJ1, acorazadoJ1, destructorJ1, cruceroJ1, fragataJ1, submarinoJ1, 
+              portaavionesJ2, acorazadoJ2, destructorJ2, cruceroJ2, fragataJ2, submarinoJ2);
+          
+          
+          //Reiniciamos al ganador y los dos turnos de los jugadores:
+          hayGanador = false;
+          
+          turnoJ1 = false;
+          
+          turnoJ2 = false;
+          
+          
+          //Reiniciado el juego devolvemos a false el booleano que inidice que debemos reiniciarlo:
+          reiniciarJuego = false;
+          
+          
+          //Y ponemos en verdadero el booleano que activa el proceso de montaje del jeugo (ubicación de barcos y decisión del jugador que abre el primer turno):
+          inicioJuego = true;
+          
+        }
+        
+        
+        
+        //Aquí inicia el proceso de ubicar los barcos en sus correspondientes tableros y después se decide quién inicia el primer turno.
+        if (inicioJuego) {
+          
+          imprimeTableroJ1(tablero1a, tablero1b);
+          
+          asignaPosicionBarcosJ1(tablero1a, tablero1b, portaavionesJ1, acorazadoJ1, destructorJ1, cruceroJ1, fragataJ1, submarinoJ1);
+          
+          
+          System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n"); //Tengo que averiguar si hay alguna forma de borrar la pantalla
+          
+          
+          imprimeTableroJ2(tablero2a, tablero2b);
+          
+          asignaPosicionBarcosJ2(tablero2a, tablero2b, portaavionesJ2, acorazadoJ2, destructorJ2, cruceroJ2, fragataJ2, submarinoJ2);
+          
+          
+          //Una vez asignados los barcos en su sitio se decide quién empieza el juego:
+          tiradaAzar = tiradaAleatoria();
+          
+                    
+          if (tiradaAzar<50) {
+            
+            turnoJ1 = true;
+            
+            System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n"); //"Borramos pantalla"
+            System.out.println("\n\nComienza el Jugador 1.");
+            
+          } else {
+            
+            turnoJ2 = true;
+            
+            System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n"); //"Borramos pantalla"
+            System.out.println("\n\nComienza el Jugador 2.");
+            
+          }
+          
+          //Acabada la fase de inicio de juego se van alternando los turnos hasta decidir un ganador
+          inicioJuego = false;
+          
+          System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n"); //"Borramos pantalla"
+          System.out.println("\n\nEl juego comienza en 5 segundos.");
+          
+          esperaSegundos(5);
+                    
+        }
+        
+        
+        
+        
+        //Turnos de juego:
+        
+        //JUGADOR 1:
+        while (turnoJ1) {
+          
+          
+          //El jugador 1 dispara:
+          System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n"); //"Borramos pantalla"
+          System.out.println("\n\nTurno del Jugador 1. Dipara:");
+          
+          imprimeTableroJ1(tablero1a, tablero1b);
+          
+          disparoJ1(tablero2a, tablero1b, portaavionesJ2, acorazadoJ2, destructorJ2, cruceroJ2, fragataJ2, submarinoJ2);
+          
+          
+          //Comprobamos si el jugador 1 ha ganado:
+          if (portaavionesJ2.hundidoBarco && acorazadoJ2.hundidoBarco && destructorJ2.hundidoBarco && 
+              cruceroJ2.hundidoBarco && fragataJ2.hundidoBarco && submarinoJ2.hundidoBarco) {
+            
+            
+            //Si ha ganado le felicitamos:
+            System.out.println("\n\nJUGADOR 1 HA GANADO. ¡¡ENHORABUENA!!");
+            
+            
+            //Decimos que hay ganador para no volver a entrar en el bucle, salvo que el jugador decida reiniciar la partida:
+            hayGanador = true;
+            
+            
+            //Llamamos al método preguntar reinicio para comprobar si desea volver a jugar:
+            if (preguntaReinicio()) {
+              
+              //Si el jugador desea jugar volvemos a falso la variable "hayGanador", de lo contrario no entraría en el bucle y se cerraría el programa:
+              hayGanador = false;
+              
+              
+              //Si el jugador ha ganado debemos ponerlo en false para que no se repita su bucle:
+              turnoJ1 = false;
+              
+              
+              //Y ponemos en verdadero el booleano de reiniciarJuego:
+              reiniciarJuego = true;
+              
+              System.out.println("\n\nEl juego se reiniciará en breve.");
+              
+              esperaSegundos(5);
+              
+            }
+            
+            
+          } else {
+            
+            turnoJ1 = false;
+            
+            turnoJ2 = true;
+            
+            
+            //Le damos 3 segundos al jugador para que pueda leer el resultado de su disparo.
+            esperaSegundos(3);
+            
+            
+            System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n"); //"Borramos pantalla"
+            
+            //Si se ha terminado el juego y se desea reiniciar no volveremos a indicar el cambio de turno:
+              
+            System.out.println("\n\nTurno del jugador 2 comienza en 5 segundos.");
+            
+            esperaSegundos(5);
+            
+          }
+        
+        }
+        
+        //JUGADOR 2:
+        while (turnoJ2) {
+          
+          
+        //El jugador 2 dispara:
+          System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n"); //"Borramos pantalla"
+          System.out.println("\n\nTurno del Jugador 2. Dipara:");
+          
+          
+          imprimeTableroJ2(tablero2a, tablero2b);
+          
+          disparoJ2(tablero1a, tablero2b, portaavionesJ1, acorazadoJ1, destructorJ1, cruceroJ1, fragataJ1, submarinoJ1);
+          
+          
+          //Comprobamos si el jugador 1 ha ganado:
+          if (portaavionesJ1.hundidoBarco && acorazadoJ1.hundidoBarco && destructorJ1.hundidoBarco && 
+              cruceroJ1.hundidoBarco && fragataJ1.hundidoBarco && submarinoJ1.hundidoBarco) {
+            
+            
+            //Si ha ganado le felicitamos:
+            System.out.println("\n\nJUGADOR 2 HA GANADO. ¡¡ENHORABUENA!!");
+            
+            
+            //Decimos que hay ganador para no volver a entrar en el bucle, salvo que el jugador decida reiniciar la partida:
+            hayGanador = true;
+            
+            
+            //Llamamos al método preguntar reinicio para comprobar si desea volver a jugar:
+            if (preguntaReinicio()) {
+              
+              //Si el jugador desea jugar volvemos a falso la variable "hayGanador", de lo contrario no entraría en el bucle y se cerraría el programa:
+              hayGanador = false;
+              
+              
+              //Si el jugador ha ganado debemos ponerlo en false para que no se repita su bucle:
+              turnoJ2 = false;
+              
+              
+              //Y ponemos en verdadero el booleano de reiniciarJuego:
+              reiniciarJuego = true;
+              
+              
+              System.out.println("\n\nEl juego se reiniciará en breve.");
+              
+              esperaSegundos(5);
+              
+            }
+            
+            
+          } else {
+            
+            turnoJ1 = true;
+            
+            turnoJ2 = false;
+            
+            
+            //Le damos 3 segundos al jugador para que pueda leer el resultado de su disparo.
+            esperaSegundos(3);
+            
+            
+            System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n"); //"Borramos pantalla"
+            
+            //Si se ha terminado el juego y se desea reiniciar no volveremos a indicar el cambio de turno:
+              
+            System.out.println("\n\nTurno del jugador 1 comienza en 5 segundos.");
+            
+            esperaSegundos(5);
+            
+          }
+          
+        }
+        
+      }
       
-      imprimeTableroJ2(tablero2a, tablero2b);
-      
-    } while(true);
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    //System.out.print("\n\n\n\n" + fragataJ2.mensajeTocadoHundido());
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+    }
     
   }
+
+
+
+
+
   
   
   
@@ -993,7 +1223,7 @@ for (int i=0; i<=11; i++) {
    * @param fragataJ1
    * @param submarinoJ1
    */
-  public static void asignaPosiciónBarcosJ1(String tablero1a[][], String tablero1b[][], 
+  public static void asignaPosicionBarcosJ1(String tablero1a[][], String tablero1b[][], 
       Barco portaavionesJ1, Barco acorazadoJ1, Barco destructorJ1, Barco cruceroJ1, Barco fragataJ1, Barco submarinoJ1) {
     
     //Scanner:
@@ -1340,7 +1570,7 @@ for (int i=0; i<=11; i++) {
    * @param fragataJ2
    * @param submarinoJ2
    */
-  public static void asignaPosiciónBarcosJ2(String tablero2a[][], String tablero2b[][], 
+  public static void asignaPosicionBarcosJ2(String tablero2a[][], String tablero2b[][], 
       Barco portaavionesJ2, Barco acorazadoJ2, Barco destructorJ2, Barco cruceroJ2, Barco fragataJ2, Barco submarinoJ2) {
     
     //Scanner:
@@ -2047,5 +2277,153 @@ for (int i=0; i<=11; i++) {
     }    
     
   }
+  
+  
+  
+  /**
+   * Devuelve un entero entre [1-100].
+   * 
+   * @return
+   */
+  public static int tiradaAleatoria() {
+    
+    int salida=0;
+    
+    
+    do {
+      
+      salida = (int)(Math.random()*100+1);
+      
+    } while(salida==50);
+    
+    
+    return salida;
+    
+  }
+  
+  
+  /**
+   * Preguntamos al jugador si desea volver a jugar y retornamos un boolean.
+   * 
+   * @return
+   */
+  public static boolean preguntaReinicio() {
+    
+    //Scanner:
+    Scanner s = new Scanner(System.in);
+    
+    //Variable respuesta:
+    String respuesta = "";
+    
+    do {
+      
+      System.out.println("\n\n¿Desea jugar otra partida?");
+      respuesta = s.nextLine().toUpperCase();
+      
+      
+    } while(!(respuesta.equals("S") || respuesta.equals("N")));
+    
+    
+    if (respuesta.equals("S")) {
+      
+      return true;
+      
+    } else {
+      
+      return false;
+      
+    }
+    
+  }
+  
+  
+  
+  /**
+   * Este método es llamado cuando el juego ha finalizado y el usuario desea reiniciar la partida para volver a jugar.<br><br>
+   * 
+   * La función de este método es reiniciar los tableros para borrar los impactos realizados y devolver a un valor por defecto a todos los barcos.<br><br>
+   * 
+   * Para el correcto funcionamiento de este método es necesario el método de la clase HundirLaFlota:
+   * <ul>
+   * <li>reiniciarTablero()</li>
+   * </ul>
+   * 
+   * Y de la clase Barco, el método:
+   * <ul>
+   * <li>setReinicia()</li>
+   * </ul>
+   * 
+   * @param tablero1a
+   * @param tablero1b
+   * @param tablero2a
+   * @param tablero2b
+   * @param portaavionesJ1
+   * @param acorazadoJ1
+   * @param destructorJ1
+   * @param cruceroJ1
+   * @param fragataJ1
+   * @param submarinoJ1
+   * @param portaavionesJ2
+   * @param acorazadoJ2
+   * @param destructorJ2
+   * @param cruceroJ2
+   * @param fragataJ2
+   * @param submarinoJ2
+   */
+  public static void reiniciarJuego(String tablero1a [][], String tablero1b [][], String tablero2a [][], String tablero2b [][], 
+      Barco portaavionesJ1, Barco acorazadoJ1, Barco destructorJ1, Barco cruceroJ1, Barco fragataJ1, Barco submarinoJ1, 
+      Barco portaavionesJ2, Barco acorazadoJ2, Barco destructorJ2, Barco cruceroJ2, Barco fragataJ2, Barco submarinoJ2) {
+    
+    
+    //Reiniciamos tableros:
+    reiniciaTableros(tablero1a, tablero1b, tablero2a, tablero2b);
+    
+        
+    //Reseteamos a los valores por defecto d elos barcos del Jugador 1:
+    portaavionesJ1.setReinicia();
+    
+    acorazadoJ1.setReinicia();
+    
+    destructorJ1.setReinicia();
+    
+    cruceroJ1.setReinicia();
+    
+    fragataJ1.setReinicia();
+    
+    submarinoJ1.setReinicia();
+    
+    
+    //Reseteamos a los valores por defecto d elos barcos del Jugador 2:
+    portaavionesJ2.setReinicia();
+    
+    acorazadoJ2.setReinicia();
+    
+    destructorJ2.setReinicia();
+    
+    cruceroJ2.setReinicia();
+    
+    fragataJ2.setReinicia();
+    
+    submarinoJ2.setReinicia();
+    
+  }
+  
+  
+  
+  
+  /**
+   * Hace esperar al cambio de turno.
+   * 
+   * @param segundos
+   */
+  public static void esperaSegundos(int segundos) {
+    try {
+      
+      Thread.sleep(segundos*1000);
+      
+    } catch (Exception E) {}
+  }
+  
+  
   
 }
