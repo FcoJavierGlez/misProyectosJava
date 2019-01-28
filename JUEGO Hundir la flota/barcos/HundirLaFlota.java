@@ -117,13 +117,6 @@ public class HundirLaFlota {
     
     
     
-    
-    
-    
-    
-    
-    
-    
     //################################     PROGRAMA     ################################\\
     
     
@@ -397,16 +390,13 @@ public class HundirLaFlota {
     }
     
   }
-
-
-
-
-
+  
   
   
   
   
   //#####################################     Métodos     #####################################\\
+  
   
   
   
@@ -2096,8 +2086,7 @@ for (int i=0; i<=11; i++) {
     }    
     
   }
-  
-  
+    
   
   /**
    * Método disparo para el Jugador 2.
@@ -2277,8 +2266,7 @@ for (int i=0; i<=11; i++) {
     }    
     
   }
-  
-  
+    
   
   /**
    * Devuelve un entero entre [1-100].
@@ -2335,7 +2323,6 @@ for (int i=0; i<=11; i++) {
     }
     
   }
-  
   
   
   /**
@@ -2409,8 +2396,6 @@ for (int i=0; i<=11; i++) {
   }
   
   
-  
-  
   /**
    * Hace esperar al cambio de turno.
    * 
@@ -2423,7 +2408,5 @@ for (int i=0; i<=11; i++) {
       
     } catch (Exception E) {}
   }
-  
-  
-  
+    
 }
