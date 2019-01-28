@@ -73,15 +73,15 @@ public class HundirLaFlota {
     
     int tiradaAzar;                                       //Variable que designa qué jugador empieza el juego si: <50 empieza Jugador 1, si >50 empieza Jugador 2.    
     
-    boolean turnoJ1 = false;                                
+    boolean turnoJ1 = false;                              //Variable que indica si es el turno del jugador 1.                         
     
-    boolean turnoJ2 = false;
+    boolean turnoJ2 = false;                              //Variable que indica si es el turno del jugador 2.
     
-    boolean inicioJuego = true;
+    boolean inicioJuego = true;                           //Variable que indica si es el inicio del juego para insertar los barcos en sus correspondientes tableros.
     
-    boolean hayGanador = false;
+    boolean hayGanador = false;                           //Variable que indica si hay un ganador, para evitar volver a entrar en un bucle y finalizar el juego.
     
-    boolean reiniciarJuego = false; 
+    boolean reiniciarJuego = false;                       //Variable que indica que el usuario desea vovler a jugar y que se debe resetear el juego.
     
     
     
@@ -244,7 +244,7 @@ public class HundirLaFlota {
         //Turnos de juego:
         
         //JUGADOR 1:
-        while (turnoJ1) {
+        while (turnoJ1 && !hayGanador) {
           
           
           //El jugador 1 dispara:
@@ -314,7 +314,7 @@ public class HundirLaFlota {
         }
         
         //JUGADOR 2:
-        while (turnoJ2) {
+        while (turnoJ2 && !hayGanador) {
           
           
         //El jugador 2 dispara:
