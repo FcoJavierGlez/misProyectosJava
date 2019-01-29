@@ -34,6 +34,7 @@ import java.util.Scanner;
  * <li>preguntaReinicio()</li>
  * <li>reiniciarJuego()</li>
  * <li>esperaSegundos()</li>
+ * <li>borradoPantalla()</li>
  * </ul>
  * 
  * Además es necesario importar la clase Barco para crear 6 instancias para el Jugador 1 y otras 6 para el Jugador 2 que harán uso de sus respectivos métodos 
@@ -131,9 +132,18 @@ public class HundirLaFlota {
     
     //Mensaje de inicio:
     
+    borraPantalla();
+    
     mensajeInicio();
     
-    System.out.print("\n\nBienvenido al juego de hundir la flota.");
+    System.out.print("\n\n\n                                                                                       BIENVENIDO AL JUEGO DE HUNDIR LA FLOTA.");
+    System.out.print("\n\n\n\nEl juego comenzará en 6 segundos.");
+    
+    System.out.print("\n\n\n\nDiviértase.");
+    
+    esperaSegundos(6);
+    
+    borraPantalla();
     
     
     
@@ -166,6 +176,7 @@ public class HundirLaFlota {
         //Si tras terminar una partida se decide reiniciar el juego::
         if (reiniciarJuego) {
           
+          System.out.println("\n\nREINICIANDO JUEGO.");
           
           //Llamamos al método reiniciarJuego():
           reiniciarJuego(tablero1a, tablero1b, tablero2a, tablero2b, 
@@ -185,8 +196,10 @@ public class HundirLaFlota {
           reiniciarJuego = false;
           
           
-          //Y ponemos en verdadero el booleano que activa el proceso de montaje del jeugo (ubicación de barcos y decisión del jugador que abre el primer turno):
+          //Y ponemos en verdadero el booleano que activa el proceso de montaje del juego (ubicación de barcos y decisión del jugador que abre el primer turno):
           inicioJuego = true;
+          
+          borraPantalla();
           
         }
         
@@ -199,9 +212,8 @@ public class HundirLaFlota {
           
           asignaPosicionBarcosJ1(tablero1a, tablero1b, portaavionesJ1, acorazadoJ1, destructorJ1, cruceroJ1, fragataJ1, submarinoJ1);
           
-          
-          System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n"); //Tengo que averiguar si hay alguna forma de borrar la pantalla
-          
+          borraPantalla();
+                    
           
           imprimeTableroJ2(tablero2a, tablero2b);
           
@@ -216,14 +228,18 @@ public class HundirLaFlota {
             
             turnoJ1 = true;
             
-            System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n"); //"Borramos pantalla"
+            borraPantalla();
+            
+            
             System.out.println("\n\nComienza el Jugador 1.");
             
           } else {
             
             turnoJ2 = true;
             
-            System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n"); //"Borramos pantalla"
+            borraPantalla();
+            
+            
             System.out.println("\n\nComienza el Jugador 2.");
             
           }
@@ -231,7 +247,6 @@ public class HundirLaFlota {
           //Acabada la fase de inicio de juego se van alternando los turnos hasta decidir un ganador
           inicioJuego = false;
           
-          System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n"); //"Borramos pantalla"
           System.out.println("\n\nEl juego comienza en 5 segundos.");
           
           esperaSegundos(5);
@@ -244,16 +259,22 @@ public class HundirLaFlota {
         //Turnos de juego:
         
         //JUGADOR 1:
-        while (turnoJ1 && !hayGanador) {
+        while (turnoJ1 && !(hayGanador || reiniciarJuego)) {
           
           
           //El jugador 1 dispara:
-          System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n"); //"Borramos pantalla"
+          borraPantalla();
+          
+          
           System.out.println("\n\nTurno del Jugador 1. Dipara:");
           
           imprimeTableroJ1(tablero1a, tablero1b);
           
           disparoJ1(tablero2a, tablero1b, portaavionesJ2, acorazadoJ2, destructorJ2, cruceroJ2, fragataJ2, submarinoJ2);
+          
+          esperaSegundos(1);
+          
+          imprimeTableroJ1(tablero1a, tablero1b);
           
           
           //Comprobamos si el jugador 1 ha ganado:
@@ -292,6 +313,7 @@ public class HundirLaFlota {
             
           } else {
             
+            //Si continúa el juego cambiamos los turnos de los jugadores:
             turnoJ1 = false;
             
             turnoJ2 = true;
@@ -301,10 +323,10 @@ public class HundirLaFlota {
             esperaSegundos(3);
             
             
-            System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n"); //"Borramos pantalla"
+            borraPantalla();
+                        
             
-            //Si se ha terminado el juego y se desea reiniciar no volveremos a indicar el cambio de turno:
-              
+            //Avisamos del cambio de turno y esperamos 5 segundos a reliazar dicho cambio:
             System.out.println("\n\nTurno del jugador 2 comienza en 5 segundos.");
             
             esperaSegundos(5);
@@ -314,17 +336,23 @@ public class HundirLaFlota {
         }
         
         //JUGADOR 2:
-        while (turnoJ2 && !hayGanador) {
+        while (turnoJ2 && !(hayGanador || reiniciarJuego)) {
           
           
-        //El jugador 2 dispara:
-          System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n"); //"Borramos pantalla"
+          //El jugador 2 dispara:
+          borraPantalla();
+          
+          
           System.out.println("\n\nTurno del Jugador 2. Dipara:");
           
           
           imprimeTableroJ2(tablero2a, tablero2b);
           
           disparoJ2(tablero1a, tablero2b, portaavionesJ1, acorazadoJ1, destructorJ1, cruceroJ1, fragataJ1, submarinoJ1);
+          
+          esperaSegundos(1);
+          
+          imprimeTableroJ2(tablero2a, tablero2b);
           
           
           //Comprobamos si el jugador 1 ha ganado:
@@ -364,6 +392,7 @@ public class HundirLaFlota {
             
           } else {
             
+            //Si continúa el juego cambiamos los turnos de los jugadores:
             turnoJ1 = true;
             
             turnoJ2 = false;
@@ -373,10 +402,10 @@ public class HundirLaFlota {
             esperaSegundos(3);
             
             
-            System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n"); //"Borramos pantalla"
+            borraPantalla();
+                        
             
-            //Si se ha terminado el juego y se desea reiniciar no volveremos a indicar el cambio de turno:
-              
+            //Avisamos del cambio de turno y esperamos 5 segundos a reliazar dicho cambio:
             System.out.println("\n\nTurno del jugador 1 comienza en 5 segundos.");
             
             esperaSegundos(5);
@@ -949,7 +978,7 @@ for (int i=0; i<=11; i++) {
      */
     do {
       
-      System.out.print("\n\nInserta el valor de la fila: ");
+      System.out.print("\n\nInserta el valor de la fila (Letra): ");
       fila = s.nextLine().toUpperCase();
       
     } while (!compruebaFila(fila));
@@ -980,7 +1009,7 @@ for (int i=0; i<=11; i++) {
      */
     do {
       
-      System.out.print("\n\nInserta el valor de la columna: ");
+      System.out.print("\n\nInserta el valor de la columna (Número): ");
       columna = s.nextInt();
       
     } while (!compruebaColumna(columna));
@@ -2407,6 +2436,23 @@ for (int i=0; i<=11; i++) {
       Thread.sleep(segundos*1000);
       
     } catch (Exception E) {}
+    
   }
+  
+  
+  /**
+   * Borra todo lo que haya consola.
+   */
+  public static void borraPantalla() {
+    
+    try {
+      new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
+    } catch (Exception e) {}
+    
+    System.out.println("\n\n\n\n\n\n\n\n"); //Introduzco varios saltos de línea para centrar la iamgen en la consola
+    
+  }
+  
+  
     
 }
