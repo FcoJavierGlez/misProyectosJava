@@ -279,11 +279,11 @@ public class Barco {
     
     if (this.hundidoBarco && this.nombreBarco!="Fragata") {
       
-      System.out.print("\n\nEnhorabuena!! Has hundido el " + this.nombreBarco + " del Jugador " + this.numeroJugador + ".");
+      System.out.print("\n\n¡¡ENHORABUENA!! Has hundido el " + this.nombreBarco + " del Jugador " + this.numeroJugador + ".");
       
     } else {
       
-      System.out.print("\n\nEnhorabuena!! Has hundido la " + this.nombreBarco + " del Jugador " + this.numeroJugador + ".");
+      System.out.print("\n\n¡¡ENHORABUENA!! Has hundido la " + this.nombreBarco + " del Jugador " + this.numeroJugador + ".");
       
     }
     

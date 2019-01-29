@@ -37,13 +37,12 @@ import java.util.Scanner;
  * <li>borradoPantalla()</li>
  * </ul>
  * 
- * Además es necesario importar la clase Barco para crear 6 instancias para el Jugador 1 y otras 6 para el Jugador 2 que harán uso de sus respectivos métodos 
+ * <br><br>Además es necesario importar la clase Barco para crear 6 instancias para el Jugador 1 y otras 6 para el Jugador 2 que harán uso de sus respectivos métodos 
  * que están descritos en el JavaDoc de la clase Barco.<br><br>
  * 
  * 
  * Posibles futuras mejoras:
  * <ul>
- * <li>El empleo de un método que borre la pantalla en vez de usar una susesión de saltos de línea para desplazar los tableros impresos en pantalla.</li>
  * <li>Implementar un sistema de juego para 1 jugador, ello implica crear una IA capaz de jugar contra el usuario.</li>
  * <li>Considero interesante ser capaz de implementar un sistema de juego en red, aunque sea a través de LAN, para que los jugadores no tuvieran que usar el mismo monitor a riesgo de ver el tablero del rival.</li>
  * <li>Finalmente, me gustaría ser capaz de dotar a este juego de una interfez gráfica, aunque sea sencilla.</li>
@@ -87,32 +86,32 @@ public class HundirLaFlota {
     
     
     //Barcos Jugador 1:
-    Barco portaavionesJ1 = new Barco("Portaaviones", 5, 1);
+    Barco portaavionesJ1 = new Barco("portaaviones", 5, 1);
     
-    Barco acorazadoJ1 = new Barco("Acorazado", 4, 1);
+    Barco acorazadoJ1 = new Barco("acorazado", 4, 1);
     
-    Barco destructorJ1 = new Barco("Destructor", 4, 1);
+    Barco destructorJ1 = new Barco("destructor", 4, 1);
     
-    Barco cruceroJ1 = new Barco("Crucero", 3, 1);
+    Barco cruceroJ1 = new Barco("crucero", 3, 1);
     
-    Barco fragataJ1 = new Barco("Fragata", 3, 1);
+    Barco fragataJ1 = new Barco("fragata", 3, 1);
     
-    Barco submarinoJ1 = new Barco("Submarino", 2, 1);
+    Barco submarinoJ1 = new Barco("submarino", 2, 1);
     
     
     
     //Barcos Jugador 2:
-    Barco portaavionesJ2 = new Barco("Portaaviones", 5, 2);
+    Barco portaavionesJ2 = new Barco("portaaviones", 5, 2);
     
-    Barco acorazadoJ2 = new Barco("Acorazado", 4, 2);
+    Barco acorazadoJ2 = new Barco("acorazado", 4, 2);
     
-    Barco destructorJ2 = new Barco("Destructor", 4, 2);
+    Barco destructorJ2 = new Barco("destructor", 4, 2);
     
-    Barco cruceroJ2 = new Barco("Crucero", 3, 2);
+    Barco cruceroJ2 = new Barco("crucero", 3, 2);
     
-    Barco fragataJ2 = new Barco("Fragata", 3, 2);
+    Barco fragataJ2 = new Barco("fragata", 3, 2);
     
-    Barco submarinoJ2 = new Barco("Submarino", 2, 2);
+    Barco submarinoJ2 = new Barco("submarino", 2, 2);
     
     
     
@@ -421,6 +420,14 @@ public class HundirLaFlota {
           }
           
         }
+        
+      }
+      
+      if (hayGanador) {
+        
+        System.out.println("\n\nFIN DE JUEGO. GRACIAS POR JUGAR.");
+        
+        esperaSegundos(3);
         
       }
       
@@ -2342,7 +2349,7 @@ for (int i=0; i<=11; i++) {
     
     do {
       
-      System.out.println("\n\n¿Desea jugar otra partida?");
+      System.out.println("\n\n¿Desea jugar otra partida? (S/N)");
       respuesta = s.nextLine().toUpperCase();
       
       
@@ -2372,7 +2379,7 @@ for (int i=0; i<=11; i++) {
    * <li>reiniciarTablero()</li>
    * </ul>
    * 
-   * Y de la clase Barco, el método:
+   * <br><br>Y de la clase Barco, el método:
    * <ul>
    * <li>setReinicia()</li>
    * </ul>
