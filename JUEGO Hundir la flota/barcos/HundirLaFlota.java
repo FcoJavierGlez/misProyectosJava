@@ -136,10 +136,11 @@ public class HundirLaFlota {
     
     mensajeInicio();
     
-    System.out.print("\n\n\n                                                                                       BIENVENIDO AL JUEGO DE HUNDIR LA FLOTA.");
-    System.out.print("\n\n\n\nEl juego comenzará en 6 segundos.");
+    System.out.print("\n\n\n                                                               AUTOR: Francisco Javier González Sabariego   ||   AÑO: 2019");
     
-    System.out.print("\n\n\n\nDiviértase.");
+    System.out.print("\n\n\nBIENVENIDO AL JUEGO DE HUNDIR LA FLOTA.");
+    
+    System.out.print("\n\nEl juego comenzará en breve. Diviértase.");
     
     esperaSegundos(6);
     
@@ -208,12 +209,19 @@ public class HundirLaFlota {
         //Aquí inicia el proceso de ubicar los barcos en sus correspondientes tableros y después se decide quién inicia el primer turno.
         if (inicioJuego) {
           
+          System.out.println("\n\nJUGADOR 1: POR FAVOR UBIQUE SUS BARCOS.");
+          
           imprimeTableroJ1(tablero1a, tablero1b);
           
           asignaPosicionBarcosJ1(tablero1a, tablero1b, portaavionesJ1, acorazadoJ1, destructorJ1, cruceroJ1, fragataJ1, submarinoJ1);
           
+          
+          
           borraPantalla();
                     
+          
+          
+          System.out.println("\n\nJUGADOR 2: POR FAVOR UBIQUE SUS BARCOS.");
           
           imprimeTableroJ2(tablero2a, tablero2b);
           
@@ -532,7 +540,7 @@ for (int i=0; i<=11; i++) {
     
     //Cabecera del tablero:
     
-    System.out.print("\n\n\n\n Tablero Jugador 1                               Impactos del Jugador 1");
+    System.out.print("\n\n\n Tablero Jugador 1                               Impactos del Jugador 1");
     
     System.out.print("\n\n |1|2|3|4|5|6|7|8|9|10                           |1|2|3|4|5|6|7|8|9|10");
     
@@ -697,7 +705,7 @@ for (int i=0; i<=11; i++) {
     
     //Cabecera del tablero:
     
-    System.out.print("\n\n\n\n Tablero Jugador 2                               Impactos del Jugador 2");
+    System.out.print("\n\n\n Tablero Jugador 2                               Impactos del Jugador 2");
     
     System.out.print("\n\n |1|2|3|4|5|6|7|8|9|10                           |1|2|3|4|5|6|7|8|9|10");
     
