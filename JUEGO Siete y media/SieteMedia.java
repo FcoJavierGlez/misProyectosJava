@@ -189,7 +189,7 @@ public class SieteMedia{
             azar = (int)(Math.random()*39);
           }
         }
-        System.out.println("\nTURNO DEL JUGADOR: Usted recibe una carta de " + cartasPuntos[azar] + " su puntuaci�n asciende a: " + (puntuacionJugador+=cartasPuntos[azar]));
+        System.out.println("\nTURNO DEL JUGADOR: Usted recibe una carta de " + cartasPuntos[azar] + " su puntuación asciende a: " + (puntuacionJugador+=cartasPuntos[azar]));
         if (puntuacionJugador<7.5) {                                                    //Mientras la putuación sea inferior a 7.5 el jugador puede volver a pedir carta
           System.out.println("\n¿Desea recibir otra carta? (S/N)");
           respuesta = s.nextLine().toUpperCase(); 
