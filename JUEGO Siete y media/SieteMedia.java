@@ -1,6 +1,6 @@
 /**Juego de la 7 y media v1.2
 *
-*   Este programa fue creado el viernes 2 de Noviembre del a�o 2018 por:
+*   Este programa fue creado el viernes 2 de Noviembre del año 2018 por:
 *
 * @author Francisco Javier González Sabariego
 * 
@@ -18,7 +18,7 @@ public class SieteMedia{
     Scanner s = new Scanner(System.in);
 
     //Variables:
-    int turno = 1;                                //La partida inicia en el primer turno, cada 10 turnos aumenta la apuesta m�nima en +5
+    int turno = 1;                                //La partida inicia en el primer turno, cada 10 turnos aumenta la apuesta mínima en +5
     boolean jugadorSeHaPasado = false;            //Si la putuación del jugador excede 7,5 pasa a verdedaro y el jugador pierde el turno
     boolean jugadorSeHaPlantado = false;          //Si el jugador decide plantarse con la puntuación actual
     int dineroJugador = 500;                      //Dinero del jugador a lo largo de la partida
