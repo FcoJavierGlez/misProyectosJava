@@ -176,7 +176,7 @@ public class TresRaya{
             while ((tablero[(ejeY-1)][(ejeX-1)])!=(" ")) {
               System.out.print("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
               System.out.print("\n\n\n\nTURNO DEL JUGADOR 1");
-              System.out.print("\nLo siento la casilla est� ocupada por una ficha, vuelva a introducir las coordenadas: ");
+              System.out.print("\nLo siento la casilla está ocupada por una ficha, vuelva a introducir las coordenadas: ");
               System.out.print("\n1 " + tablero[0][0] + " " + tablero[0][1] + " " + tablero[0][2]);
               System.out.print("\n2 " + tablero[1][0] + " " + tablero[1][1] + " " + tablero[1][2]);
               System.out.print("\n3 " + tablero[2][0] + " " + tablero[2][1] + " " + tablero[2][2]);
@@ -199,7 +199,7 @@ public class TresRaya{
           System.out.print("\n3 " + tablero[2][0] + " " + tablero[2][1] + " " + tablero[2][2]);
           System.out.printf("\n  1 2 3");
 
-          if ((prueba+=tablero[0][0]+tablero[0][1]+tablero[0][2]).equals("OOO")) {      //Comprobaci�n de si ha ganado el Jugador 1
+          if ((prueba+=tablero[0][0]+tablero[0][1]+tablero[0][2]).equals("OOO")) {      //Comprobación de si ha ganado el Jugador 1
             System.out.print("\n\n¡¡Jugador 1 ha ganado!!");
             jugador1Gana=true;
             victoriasJ1+=1;
@@ -477,7 +477,7 @@ public class TresRaya{
            * En caso de no poder ganar hará la comprobación de si el jugador humano puede ganarle.
            *    En caso de que el jugador humano pueda ganar la máquina introducirá ficha para impedirlo.
            * 
-           * Si ninguno de estos casos es posible la m�quina pondr� ficha en una casilla al azar mientras
+           * Si ninguno de estos casos es posible la máquina pondrá ficha en una casilla al azar mientras
            * que esta casilla al azar no está ocupada por otra ficha, en ese caso generaría otra tirada.
            */
           
@@ -1146,7 +1146,7 @@ public class TresRaya{
           System.out.print("\n3 " + tablero[2][0] + " " + tablero[2][1] + " " + tablero[2][2]);
           System.out.printf("\n  1 2 3");
 
-          if ((prueba+=tablero[0][0]+tablero[0][1]+tablero[0][2]).equals("OOO")) {      //Comprobaci�n de si ha ganado el Jugador 1
+          if ((prueba+=tablero[0][0]+tablero[0][1]+tablero[0][2]).equals("OOO")) {      //Comprobación de si ha ganado el Jugador 1
             System.out.print("\n\n¡¡Jugador 1 ha ganado!!");
             jugador1Gana=true;
             victoriasJ1+=1;
@@ -1349,7 +1349,7 @@ public class TresRaya{
           System.out.print("\n3 " + tablero[2][0] + " " + tablero[2][1] + " " + tablero[2][2]);
           System.out.printf("\n  1 2 3");
 
-          if ((prueba+=tablero[0][0]+tablero[0][1]+tablero[0][2]).equals("XXX")) {      //Comprobaci�n de si ha ganado el Jugador 2
+          if ((prueba+=tablero[0][0]+tablero[0][1]+tablero[0][2]).equals("XXX")) {      //Comprobación de si ha ganado el Jugador 2
             System.out.print("\n\n¡¡Jugador 2 ha ganado!!");
             jugador2Gana=true;
             victoriasJ2+=1;
