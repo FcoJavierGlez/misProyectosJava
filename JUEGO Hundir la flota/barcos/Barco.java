@@ -9,7 +9,7 @@ package barcos;
  * La clase se compone de los siguientes métodos:
  * 
  * <ul>
- * <li>El constructor "Barco" que acepta por parámetros: el nombre del tipo de barco, las casillas que lo componen y el jugador al que pertenece. </li>
+ * <li>Barco() -> El constructor "Barco" que acepta por parámetros: el nombre del tipo de barco, las casillas que lo componen y el jugador al que pertenece. </li>
  * <li>getCasillas()</li>
  * <li>getVerticalidad()</li>
  * <li>setVerticalidad()</li>
@@ -129,6 +129,28 @@ public class Barco {
   public void setPosicionInvertida() {
     
     this.posicionInvertida=true;
+    
+  }
+  
+  
+  /**
+   * Este método elimina la posición invertida tras ser invalidadas las coordenadas de posicionamiento de barco.
+   * 
+   */
+  public void setEliminaPosicionInvertida() {
+    
+    this.posicionInvertida=false;
+    
+  }
+  
+  
+  /**
+   * Retorna el valor de la posición invertida
+   * 
+   */
+  public boolean getPosicionInvertida() {
+    
+    return this.posicionInvertida;
     
   }
   
@@ -275,17 +297,35 @@ public class Barco {
   /**
    * Muestra el mensaje de que el barco está hundido.
    */
-  public void mensajeHundido() {
+  public void mensajeHundido(IA skynet) {
     
-    if (this.hundidoBarco && this.nombreBarco!="Fragata") {
+    if (skynet.getNumDisparos()==0) {
       
-      System.out.print("\n\n¡¡ENHORABUENA!! Has hundido el " + this.nombreBarco + " del Jugador " + this.numeroJugador + ".");
+      if (this.hundidoBarco && this.nombreBarco!="Fragata") {
+        
+        System.out.print("\n\n¡¡ENHORABUENA!! Has hundido el " + this.nombreBarco + " del Jugador " + this.numeroJugador + ".");
+        
+      } else {
+        
+        System.out.print("\n\n¡¡ENHORABUENA!! Has hundido la " + this.nombreBarco + " del Jugador " + this.numeroJugador + ".");
+        
+      }
       
     } else {
       
-      System.out.print("\n\n¡¡ENHORABUENA!! Has hundido la " + this.nombreBarco + " del Jugador " + this.numeroJugador + ".");
+      if (this.hundidoBarco && this.nombreBarco!="Fragata") {
+        
+        System.out.print("\n\n¡¡ENHORABUENA!! Has hundido el " + this.nombreBarco + " de Skynet.");
+        
+      } else {
+        
+        System.out.print("\n\n¡¡ENHORABUENA!! Has hundido la " + this.nombreBarco + " de Skynet.");
+        
+      }
       
     }
+    
+    
     
   }
   

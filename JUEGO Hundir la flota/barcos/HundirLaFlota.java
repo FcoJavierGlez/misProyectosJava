@@ -35,6 +35,9 @@ import java.util.Scanner;
  * <li>reiniciarJuego()</li>
  * <li>esperaSegundos()</li>
  * <li>borradoPantalla()</li>
+ * <li>leeMenu()</li>
+ * <li>disparoIA()</li>
+ * <li>asignaPosicionesBarcosIA()</li>
  * </ul>
  * 
  * <br><br>Además es necesario importar la clase Barco para crear 6 instancias para el Jugador 1 y otras 6 para el Jugador 2 que harán uso de sus respectivos métodos 
@@ -53,7 +56,10 @@ import java.util.Scanner;
  * 
  * @author Francisco Javier González Sabariego.
  * 
- * @version 1.0  //  Fecha: 28/01/2019
+ * @version 2.0  //  Fecha: 28/01/2019
+ * 
+ *    Versión 1.0 (Fecha: 28/01/2019): Salida del juego con el modo para 2 jugadores.
+ *    Versión 2.0 (Fecha: 03/02/2019): Añadida la IA para el modo 1 jugador.
  * 
  */
 public class HundirLaFlota {
@@ -69,7 +75,11 @@ public class HundirLaFlota {
     
     String [][] tablero2b = new String [12][12];          //Tablero de impactos que ha hecho el jugador 2 en el tablero del jugador 1.
     
-    int numeroJugadores = 2;                              //Variable que define el número de jugadores, en principio valdrá 2 puesto que no he programado el modo 1 jugador.
+    int [][] tablero2c = new int [12][12];                //Mapeado que hace la máquina del tablero enemigo y sus disparos.
+    
+    int [][] coordenadas = new int [30][2];               //Almacena las coordenadas de las casillas con mayor probabilidad de tener un barco no reveleado.
+    
+    int numeroJugadores;                                  //Variable que define el número de jugadores, en principio valdrá 2 puesto que no he programado el modo 1 jugador.
     
     int tiradaAzar;                                       //Variable que designa qué jugador empieza el juego si: <50 empieza Jugador 1, si >50 empieza Jugador 2.    
     
@@ -82,6 +92,11 @@ public class HundirLaFlota {
     boolean hayGanador = false;                           //Variable que indica si hay un ganador, para evitar volver a entrar en un bucle y finalizar el juego.
     
     boolean reiniciarJuego = false;                       //Variable que indica que el usuario desea vovler a jugar y que se debe resetear el juego.
+    
+    
+    
+    //IA:
+    IA skynet = new IA("Skynet");
     
     
     
@@ -135,7 +150,7 @@ public class HundirLaFlota {
     
     mensajeInicio();
     
-    System.out.print("\n\n\n                                                               AUTOR: Francisco Javier González Sabariego   ||   AÑO: 2019");
+    System.out.print("\n\n\n                                                        AUTOR: Francisco Javier González Sabariego   ||   AÑO: 2019");
     
     System.out.print("\n\n\nBIENVENIDO AL JUEGO DE HUNDIR LA FLOTA.");
     
@@ -147,17 +162,277 @@ public class HundirLaFlota {
     
     
     
-    //Menu (pendiente de realizar):
+    //Menu:
     
-//    do {
-//      
-//    } while();
+    do {
+      
+      System.out.print("\n(1) Modo de un jugador. Jugador vs IA.");
+      System.out.print("\n(2) Modo de dos jugadores. Jugador vs Jugador.");
+      System.out.print("\n(3) Salir del programa.");
+      numeroJugadores = leeMenu();
+      
+    } while(numeroJugadores<1 || numeroJugadores>3);
     
     
     
-    //Modo 1 jugador:    //Pendiente de realizar
+    //Modo 1 jugador:
+    
     
     if (numeroJugadores==1) {
+      
+      skynet.reiniciaTableroIA(tablero2c);
+      
+      //Mientras no haya ganador se repite el bucle mediente el cual se van turnando los jugadores:
+      while (!hayGanador) {        
+        
+        
+        //Si tras terminar una partida se decide reiniciar el juego::
+        if (reiniciarJuego) {
+          
+          System.out.println("\n\nREINICIANDO JUEGO.");
+          
+          //Llamamos al método reiniciarJuego():
+          reiniciarJuego(tablero1a, tablero1b, tablero2a, tablero2b, 
+              portaavionesJ1, acorazadoJ1, destructorJ1, cruceroJ1, fragataJ1, submarinoJ1, 
+              portaavionesJ2, acorazadoJ2, destructorJ2, cruceroJ2, fragataJ2, submarinoJ2);
+          
+          skynet.reiniciaTableroIA(tablero2c);
+          
+          skynet.reiniciaIA();
+          
+          
+          //Reiniciamos al ganador y los dos turnos de los jugadores:
+          hayGanador = false;
+          
+          turnoJ1 = false;
+          
+          turnoJ2 = false;
+          
+          
+          //Reiniciado el juego devolvemos a false el booleano que inidice que debemos reiniciarlo:
+          reiniciarJuego = false;
+          
+          
+          //Y ponemos en verdadero el booleano que activa el proceso de montaje del juego (ubicación de barcos y decisión del jugador que abre el primer turno):
+          inicioJuego = true;
+          
+          borraPantalla();
+          
+        }
+        
+        
+        
+        //Aquí inicia el proceso de ubicar los barcos en sus correspondientes tableros y después se decide quién inicia el primer turno.
+        if (inicioJuego) {
+          
+          System.out.println("\n\nJUGADOR 1: POR FAVOR UBIQUE SUS BARCOS.");
+          
+          imprimeTableroJ1(tablero1a, tablero1b);
+          
+          asignaPosicionBarcosJ1(tablero1a, tablero1b, portaavionesJ1, acorazadoJ1, destructorJ1, cruceroJ1, fragataJ1, submarinoJ1);
+          
+          
+          
+          borraPantalla();
+          
+          asignaPosicionBarcosIA(tablero2a, skynet, portaavionesJ2, acorazadoJ2, destructorJ2, cruceroJ2, fragataJ2, submarinoJ2);
+          
+          imprimeTableroJ2(tablero2a, tablero2b);
+          
+          
+          //Una vez asignados los barcos en su sitio se decide quién empieza el juego:
+          tiradaAzar = tiradaAleatoria();
+          
+                    
+          if (tiradaAzar<50) {
+            
+            turnoJ1 = true;
+            
+            borraPantalla();
+            
+            
+            System.out.println("\n\nComienza el Jugador 1.");
+            
+          } else {
+            
+            turnoJ2 = true;
+            
+            borraPantalla();
+            
+            
+            System.out.println("\n\nComienza Skynet.");
+            
+          }
+          
+          //Acabada la fase de inicio de juego se van alternando los turnos hasta decidir un ganador
+          inicioJuego = false;
+          
+          System.out.println("\n\nEl juego comienza en 5 segundos.");
+          
+          esperaSegundos(5);
+                    
+        }
+        
+        
+        
+        
+        //Turnos de juego:
+        
+        //JUGADOR 1:
+        while (turnoJ1 && !(hayGanador || reiniciarJuego)) {
+          
+          
+          //El jugador 1 dispara:
+          borraPantalla();
+          
+          
+          System.out.println("\n\nTurno del Jugador 1. Dipara:");
+          
+          imprimeTableroJ1(tablero1a, tablero1b);
+          
+          disparoJ1(tablero2a, tablero1b, skynet,  portaavionesJ2, acorazadoJ2, destructorJ2, cruceroJ2, fragataJ2, submarinoJ2);
+          
+          esperaSegundos(1);
+          
+          imprimeTableroJ1(tablero1a, tablero1b);
+          
+          
+          //Comprobamos si el jugador 1 ha ganado:
+          if (portaavionesJ2.hundidoBarco && acorazadoJ2.hundidoBarco && destructorJ2.hundidoBarco && 
+              cruceroJ2.hundidoBarco && fragataJ2.hundidoBarco && submarinoJ2.hundidoBarco) {
+            
+            
+            //Si ha ganado le felicitamos:
+            System.out.println("\n\nJUGADOR 1 HA GANADO. ¡¡ENHORABUENA!!");
+            
+            
+            //Decimos que hay ganador para no volver a entrar en el bucle, salvo que el jugador decida reiniciar la partida:
+            hayGanador = true;
+            
+            
+            //Llamamos al método preguntar reinicio para comprobar si desea volver a jugar:
+            if (preguntaReinicio()) {
+              
+              //Si el jugador desea jugar volvemos a falso la variable "hayGanador", de lo contrario no entraría en el bucle y se cerraría el programa:
+              hayGanador = false;
+              
+              
+              //Si el jugador ha ganado debemos ponerlo en false para que no se repita su bucle:
+              turnoJ1 = false;
+              
+              
+              //Y ponemos en verdadero el booleano de reiniciarJuego:
+              reiniciarJuego = true;
+              
+              System.out.println("\n\nEl juego se reiniciará en breve.");
+              
+              esperaSegundos(5);
+              
+            }
+            
+            
+          } else {
+            
+            //Si continúa el juego cambiamos los turnos de los jugadores:
+            turnoJ1 = false;
+            
+            turnoJ2 = true;
+            
+            
+            //Le damos 3 segundos al jugador para que pueda leer el resultado de su disparo.
+            esperaSegundos(3);
+            
+            
+            borraPantalla();
+                        
+            
+            //Avisamos del cambio de turno y esperamos 5 segundos a reliazar dicho cambio:
+            System.out.println("\n\nTurno de Skynet comienza en 5 segundos.");
+            
+            esperaSegundos(5);
+            
+          }
+        
+        }
+        
+        //JUGADOR 2:
+        while (turnoJ2 && !(hayGanador || reiniciarJuego)) {
+          
+          
+          //El jugador 2 dispara:
+          borraPantalla();
+          
+          System.out.println("\n\nTurno de Skynet");
+          
+          disparoIA(tablero1a, tablero2c, skynet, coordenadas, portaavionesJ1, acorazadoJ1, destructorJ1, cruceroJ1, fragataJ1, submarinoJ1);
+          
+          esperaSegundos(5);
+          
+          
+          //Comprobamos si la IA ha ganado:
+          if (portaavionesJ1.hundidoBarco && acorazadoJ1.hundidoBarco && destructorJ1.hundidoBarco && 
+              cruceroJ1.hundidoBarco && fragataJ1.hundidoBarco && submarinoJ1.hundidoBarco) {
+            
+            
+            //Si ha ganado lo mostramoss:
+            System.out.println("\n\nSKYNET HA GANADO. SAYONARA, BABY!!");
+            
+            
+            //Decimos que hay ganador para no volver a entrar en el bucle, salvo que el jugador decida reiniciar la partida:
+            hayGanador = true;
+            
+            
+            //Llamamos al método preguntar reinicio para comprobar si desea volver a jugar:
+            if (preguntaReinicio()) {
+              
+              //Si el jugador desea jugar volvemos a falso la variable "hayGanador", de lo contrario no entraría en el bucle y se cerraría el programa:
+              hayGanador = false;
+              
+              
+              //Si el jugador ha ganado debemos ponerlo en false para que no se repita su bucle:
+              turnoJ2 = false;
+              
+              
+              //Y ponemos en verdadero el booleano de reiniciarJuego:
+              reiniciarJuego = true;
+              
+              
+              System.out.println("\n\nEl juego se reiniciará en breve.");
+              
+              esperaSegundos(5);
+              
+            }
+            
+            
+          } else {
+            
+            //Si continúa el juego cambiamos los turnos de los jugadores:
+            turnoJ1 = true;
+            
+            turnoJ2 = false;
+            
+            
+            borraPantalla();
+                        
+            
+            //Avisamos del cambio de turno y esperamos 5 segundos a reliazar dicho cambio:
+            System.out.println("\n\nTurno del jugador 1 comienza en 5 segundos.");
+            
+            esperaSegundos(5);
+            
+          }
+          
+        }
+        
+      }
+      
+      if (hayGanador) {
+        
+        System.out.println("\n\nGAME OVER");
+        
+        esperaSegundos(3);
+        
+      }
       
     }
     
@@ -277,7 +552,7 @@ public class HundirLaFlota {
           
           imprimeTableroJ1(tablero1a, tablero1b);
           
-          disparoJ1(tablero2a, tablero1b, portaavionesJ2, acorazadoJ2, destructorJ2, cruceroJ2, fragataJ2, submarinoJ2);
+          disparoJ1(tablero2a, tablero1b, skynet, portaavionesJ2, acorazadoJ2, destructorJ2, cruceroJ2, fragataJ2, submarinoJ2);
           
           esperaSegundos(1);
           
@@ -355,7 +630,7 @@ public class HundirLaFlota {
           
           imprimeTableroJ2(tablero2a, tablero2b);
           
-          disparoJ2(tablero1a, tablero2b, portaavionesJ1, acorazadoJ1, destructorJ1, cruceroJ1, fragataJ1, submarinoJ1);
+          disparoJ2(tablero1a, tablero2b, skynet, portaavionesJ1, acorazadoJ1, destructorJ1, cruceroJ1, fragataJ1, submarinoJ1);
           
           esperaSegundos(1);
           
@@ -432,6 +707,23 @@ public class HundirLaFlota {
       }
       
     }
+    
+    
+    //Salir del programa:
+    
+    if (numeroJugadores==3) {
+      
+      borraPantalla();
+      
+      System.out.print("\nFIN DE PROGRAMA");
+      
+      System.exit(0);
+      
+    }
+    
+    
+    
+    
     
   }
   
@@ -1065,6 +1357,22 @@ for (int i=0; i<=11; i++) {
     } else if (barco.getVerticalidad() && barco.getCasillas()-1+fila>10) {
       
       barco.setPosicionInvertida();
+      
+    }
+    
+    
+    /*
+     * Dado que una vez se asigna la posición invertida se queda fija en ella, aunque luego las coordenadas sean incorrectas,
+     * para evitar que se salga del array por el lado izquierdo o arriba (causando un error de índice) en caso de volver a meter
+     * las coordenadas debemos comprobar si no se desborda arriba o a la izquierda y, de ocurrir, debemos revertir la inversión.
+     */
+    if (barco.getPosicionInvertida() && !barco.getVerticalidad() && columna-barco.getCasillas()-1<1) {
+      
+      barco.setEliminaPosicionInvertida();
+      
+    } else if (barco.getPosicionInvertida() && barco.getVerticalidad() && fila-barco.getCasillas()-1<1) {
+      
+      barco.setEliminaPosicionInvertida();
       
     }
     
@@ -1989,6 +2297,7 @@ for (int i=0; i<=11; i++) {
    * 
    * @param tablero2a
    * @param tablero1b
+   * @param skynet
    * @param portaavionesJ2
    * @param acorazadoJ2
    * @param destructorJ2
@@ -1996,7 +2305,7 @@ for (int i=0; i<=11; i++) {
    * @param fragataJ2
    * @param submarinoJ2
    */
-  public static void disparoJ1(String tablero2a[][], String tablero1b[][],
+  public static void disparoJ1(String tablero2a[][], String tablero1b[][], IA skynet, 
       Barco portaavionesJ2, Barco acorazadoJ2, Barco destructorJ2, Barco cruceroJ2, Barco fragataJ2, Barco submarinoJ2) {
     
     int fila;
@@ -2053,79 +2362,8 @@ for (int i=0; i<=11; i++) {
       
       tablero1b [fila][columna] = "X|";
       
-      if (portaavionesJ2.compruebaImpacto(fila, columna)) {
-        
-        portaavionesJ2.tocado();        
-        
-        if (portaavionesJ2.hundidoBarco && !portaavionesJ2.haSalidoMensajeHundido) {      //Si lo hundimos:
-          
-          portaavionesJ2.mensajeHundido();                                                //Imprimos el mensaje de que ha sido hundido.
-          
-          portaavionesJ2.setHaSalidoMensajeHundido();                                     //Y activamos el booleano de que este mensaje ya ha salido para que no se repita.
-          
-        }
-        
-      } else if (acorazadoJ2.compruebaImpacto(fila, columna)) { 
-        
-        acorazadoJ2.tocado();
-        
-        if (acorazadoJ2.hundidoBarco && !acorazadoJ2.haSalidoMensajeHundido) {            //Si lo hundimos:
-          
-          acorazadoJ2.mensajeHundido();                                                   //Imprimos el mensaje de que ha sido hundido.
-          
-          acorazadoJ2.setHaSalidoMensajeHundido();                                        //Y activamos el booleano de que este mensaje ya ha salido para que no se repita.
-          
-        }
-        
-      } else if (destructorJ2.compruebaImpacto(fila, columna)) {
-        
-        destructorJ2.tocado();
-        
-        if (destructorJ2.hundidoBarco && !destructorJ2.haSalidoMensajeHundido) {          //Si lo hundimos:
-          
-          destructorJ2.mensajeHundido();                                                  //Imprimos el mensaje de que ha sido hundido.
-          
-          destructorJ2.setHaSalidoMensajeHundido();                                       //Y activamos el booleano de que este mensaje ya ha salido para que no se repita.
-          
-        }
-        
-      } else if (cruceroJ2.compruebaImpacto(fila, columna)) {
-        
-        cruceroJ2.tocado();
-        
-        if (cruceroJ2.hundidoBarco && !cruceroJ2.haSalidoMensajeHundido) {                //Si lo hundimos:
-          
-          cruceroJ2.mensajeHundido();                                                     //Imprimos el mensaje de que ha sido hundido.
-          
-          cruceroJ2.setHaSalidoMensajeHundido();                                          //Y activamos el booleano de que este mensaje ya ha salido para que no se repita.
-          
-        }
-        
-      } else if (fragataJ2.compruebaImpacto(fila, columna)) {
-        
-        fragataJ2.tocado();
-        
-        if (fragataJ2.hundidoBarco && !fragataJ2.haSalidoMensajeHundido) {                //Si lo hundimos:
-          
-          fragataJ2.mensajeHundido();                                                     //Imprimos el mensaje de que ha sido hundido.
-          
-          fragataJ2.setHaSalidoMensajeHundido();                                          //Y activamos el booleano de que este mensaje ya ha salido para que no se repita.
-          
-        }
-        
-      } else if (submarinoJ2.compruebaImpacto(fila, columna)) {
-        
-        submarinoJ2.tocado();
-        
-        if (submarinoJ2.hundidoBarco && !submarinoJ2.haSalidoMensajeHundido) {            //Si lo hundimos:
-          
-          submarinoJ2.mensajeHundido();                                                   //Imprimos el mensaje de que ha sido hundido.
-          
-          submarinoJ2.setHaSalidoMensajeHundido();                                        //Y activamos el booleano de que este mensaje ya ha salido para que no se repita.
-          
-        }
-        
-      }
+      compruebaBarcoImpactado(portaavionesJ2, acorazadoJ2, destructorJ2, cruceroJ2, fragataJ2, submarinoJ2, fila,
+          columna, skynet);
       
     }    
     
@@ -2176,7 +2414,7 @@ for (int i=0; i<=11; i++) {
    * @param fragataJ1
    * @param submarinoJ1
    */
-  public static void disparoJ2(String tablero1a[][], String tablero2b[][],
+  public static void disparoJ2(String tablero1a[][], String tablero2b[][], IA skynet, 
       Barco portaavionesJ1, Barco acorazadoJ1, Barco destructorJ1, Barco cruceroJ1, Barco fragataJ1, Barco submarinoJ1) {
     
     int fila;
@@ -2233,81 +2471,105 @@ for (int i=0; i<=11; i++) {
       
       tablero2b [fila][columna] = "X|";
       
-      if (portaavionesJ1.compruebaImpacto(fila, columna)) {
+      compruebaBarcoImpactado(portaavionesJ1, acorazadoJ1, destructorJ1, cruceroJ1, fragataJ1, submarinoJ1, fila, columna, skynet);
+      
+    }    
+    
+  }
+
+
+
+
+
+  /**
+   * Este método detecta qúe barco ha sido impactado y si ha sido hundido. 
+   * (Este método es para 2 jugadores), la IA usa otro incluído en la clase IA.
+   * 
+   * @param portaavionesJ1
+   * @param acorazadoJ1
+   * @param destructorJ1
+   * @param cruceroJ1
+   * @param fragataJ1
+   * @param submarinoJ1
+   * @param fila
+   * @param columna
+   */
+  public static void compruebaBarcoImpactado(Barco portaavionesJ1, Barco acorazadoJ1, Barco destructorJ1,
+      Barco cruceroJ1, Barco fragataJ1, Barco submarinoJ1, int fila, int columna, IA skynet) {
+    
+    if (portaavionesJ1.compruebaImpacto(fila, columna)) {
+      
+      portaavionesJ1.tocado();
+      
+      if (portaavionesJ1.hundidoBarco && !portaavionesJ1.haSalidoMensajeHundido) {      //Si lo hundimos:
         
-        portaavionesJ1.tocado();
+        portaavionesJ1.mensajeHundido(skynet);                                              //Imprimos el mensaje de que ha sido hundido.
         
-        if (portaavionesJ1.hundidoBarco && !portaavionesJ1.haSalidoMensajeHundido) {      //Si lo hundimos:
-          
-          portaavionesJ1.mensajeHundido();                                                //Imprimos el mensaje de que ha sido hundido.
-          
-          portaavionesJ1.setHaSalidoMensajeHundido();                                     //Y activamos el booleano de que este mensaje ya ha salido para que no se repita.
-          
-        }
-        
-      } else if (acorazadoJ1.compruebaImpacto(fila, columna)) {
-        
-        acorazadoJ1.tocado();
-        
-        if (acorazadoJ1.hundidoBarco && !acorazadoJ1.haSalidoMensajeHundido) {            //Si lo hundimos:
-          
-          acorazadoJ1.mensajeHundido();                                                   //Imprimos el mensaje de que ha sido hundido.
-          
-          acorazadoJ1.setHaSalidoMensajeHundido();                                        //Y activamos el booleano de que este mensaje ya ha salido para que no se repita.
-          
-        }
-        
-      } else if (destructorJ1.compruebaImpacto(fila, columna)) {
-        
-        destructorJ1.tocado();
-        
-        if (destructorJ1.hundidoBarco && !destructorJ1.haSalidoMensajeHundido) {          //Si lo hundimos:
-          
-          destructorJ1.mensajeHundido();                                                  //Imprimos el mensaje de que ha sido hundido.
-          
-          destructorJ1.setHaSalidoMensajeHundido();                                       //Y activamos el booleano de que este mensaje ya ha salido para que no se repita.
-          
-        }
-        
-      } else if (cruceroJ1.compruebaImpacto(fila, columna)) {
-        
-        cruceroJ1.tocado();
-        
-        if (cruceroJ1.hundidoBarco && !cruceroJ1.haSalidoMensajeHundido) {                //Si lo hundimos:
-          
-          cruceroJ1.mensajeHundido();                                                     //Imprimos el mensaje de que ha sido hundido.
-          
-          cruceroJ1.setHaSalidoMensajeHundido();                                          //Y activamos el booleano de que este mensaje ya ha salido para que no se repita.
-          
-        }
-        
-      } else if (fragataJ1.compruebaImpacto(fila, columna)) {
-        
-        fragataJ1.tocado();
-        
-        if (fragataJ1.hundidoBarco && !fragataJ1.haSalidoMensajeHundido) {                //Si lo hundimos:
-          
-          fragataJ1.mensajeHundido();                                                     //Imprimos el mensaje de que ha sido hundido.
-          
-          fragataJ1.setHaSalidoMensajeHundido();                                          //Y activamos el booleano de que este mensaje ya ha salido para que no se repita.
-          
-        }
-        
-      } else if (submarinoJ1.compruebaImpacto(fila, columna)) {
-        
-        submarinoJ1.tocado();
-        
-        if (submarinoJ1.hundidoBarco && !submarinoJ1.haSalidoMensajeHundido) {            //Si lo hundimos:
-          
-          submarinoJ1.mensajeHundido();                                                   //Imprimos el mensaje de que ha sido hundido.
-          
-          submarinoJ1.setHaSalidoMensajeHundido();                                        //Y activamos el booleano de que este mensaje ya ha salido para que no se repita.
-          
-        }
+        portaavionesJ1.setHaSalidoMensajeHundido();                                     //Y activamos el booleano de que este mensaje ya ha salido para que no se repita.
         
       }
       
-    }    
+    } else if (acorazadoJ1.compruebaImpacto(fila, columna)) {
+      
+      acorazadoJ1.tocado();
+      
+      if (acorazadoJ1.hundidoBarco && !acorazadoJ1.haSalidoMensajeHundido) {            //Si lo hundimos:
+        
+        acorazadoJ1.mensajeHundido(skynet);                                                   //Imprimos el mensaje de que ha sido hundido.
+        
+        acorazadoJ1.setHaSalidoMensajeHundido();                                        //Y activamos el booleano de que este mensaje ya ha salido para que no se repita.
+        
+      }
+      
+    } else if (destructorJ1.compruebaImpacto(fila, columna)) {
+      
+      destructorJ1.tocado();
+      
+      if (destructorJ1.hundidoBarco && !destructorJ1.haSalidoMensajeHundido) {          //Si lo hundimos:
+        
+        destructorJ1.mensajeHundido(skynet);                                                  //Imprimos el mensaje de que ha sido hundido.
+        
+        destructorJ1.setHaSalidoMensajeHundido();                                       //Y activamos el booleano de que este mensaje ya ha salido para que no se repita.
+        
+      }
+      
+    } else if (cruceroJ1.compruebaImpacto(fila, columna)) {
+      
+      cruceroJ1.tocado();
+      
+      if (cruceroJ1.hundidoBarco && !cruceroJ1.haSalidoMensajeHundido) {                //Si lo hundimos:
+        
+        cruceroJ1.mensajeHundido(skynet);                                                     //Imprimos el mensaje de que ha sido hundido.
+        
+        cruceroJ1.setHaSalidoMensajeHundido();                                          //Y activamos el booleano de que este mensaje ya ha salido para que no se repita.
+        
+      }
+      
+    } else if (fragataJ1.compruebaImpacto(fila, columna)) {
+      
+      fragataJ1.tocado();
+      
+      if (fragataJ1.hundidoBarco && !fragataJ1.haSalidoMensajeHundido) {                //Si lo hundimos:
+        
+        fragataJ1.mensajeHundido(skynet);                                                     //Imprimos el mensaje de que ha sido hundido.
+        
+        fragataJ1.setHaSalidoMensajeHundido();                                          //Y activamos el booleano de que este mensaje ya ha salido para que no se repita.
+        
+      }
+      
+    } else if (submarinoJ1.compruebaImpacto(fila, columna)) {
+      
+      submarinoJ1.tocado();
+      
+      if (submarinoJ1.hundidoBarco && !submarinoJ1.haSalidoMensajeHundido) {            //Si lo hundimos:
+        
+        submarinoJ1.mensajeHundido(skynet);                                                   //Imprimos el mensaje de que ha sido hundido.
+        
+        submarinoJ1.setHaSalidoMensajeHundido();                                        //Y activamos el booleano de que este mensaje ya ha salido para que no se repita.
+        
+      }
+      
+    }
     
   }
     
@@ -2465,6 +2727,515 @@ for (int i=0; i<=11; i++) {
     } catch (Exception e) {}
     
     System.out.println("\n\n\n\n\n\n\n\n"); //Introduzco varios saltos de línea para centrar la iamgen en la consola
+    
+  }
+  
+  
+  /**
+   * Lee la entrada del menu.
+   * 
+   * @return
+   */
+  public static int leeMenu() {
+    
+    int menu;
+    
+    Scanner s = new Scanner(System.in);
+    
+    menu = s.nextInt();
+    
+    return menu;
+    
+  }
+  
+  
+  
+  
+  
+  //#####################################     IA     #####################################\\
+  
+  
+  
+
+  /**
+   * Método disparo para la IA.
+   * 
+   * Este método agrupa una serie de métodos, a continuación descritos, 
+   * y gestiona el proceso de disparo. Primero se piden las coordenadas y se verifican tanto las coordenadas como el disparo.
+   * <br>
+   * 
+   * A continuación se sobreescribe en el tablero enemigo el impacto, en caso de haber una casilla de barco se sobreescribe "X|" y en caso de no haberla
+   * se sobreescribe un "O|", del mismo modo se hace una copia en las mismas coordenadas en el tablero b del jugador para ver dónde ha disparado y con qué resultado.
+   * <br>
+   * 
+   * En caso de haber impactado, es decir, en caso de haber encontrado en el tablero del jugador contrario una casilla con el String "B|" además de sobreescribir, 
+   * como hemos mencionado anteriormente tanto el tablero principal del enemigo como el tablero secundario del jugador activo, debemos verificar cuál de los barcos
+   * enemigos hemos impacto y restarle una de sus casillas actuales, de tal forma que, cuando ese barco llegue a poseer cero casillas actuales active el booleano de hundido.
+   * <br>
+   * 
+   * Para el correcto funcionamiento de este método es necesario hacer uso de los siguientes métodos de la clase HundirLaFlota:
+   * 
+   * <ul>
+   * <li>pideCoordenadaFila()</li>
+   * <li>pideCoordenadaColumna()</li>
+   * <li>transformaFila()</li>
+   * <li>validaDisparo()</li>
+   * </ul>
+   * 
+   * 
+   * Además es necesario hacer uso de los siguientes métodos de la clase Barco:
+   * 
+   * <ul>
+   * <li>compruebaImpacto()</li>
+   * <li>tocado()</li>
+   * <li>mensajeHundido()</li>
+   * <li>setHaSalidoMensajeHundido()</li>
+   * </ul>
+   * 
+   * Y también de los siguientes métodos de la clase IA:
+   * 
+   * <ul>
+   * <li>mapeaImpacto()</li>
+   * <li>setNumDisparos()</li>
+   * <li>setHeDetectadoBarco()</li>
+   * <li>setCoordImpacto()</li>
+   * <li>paso1()</li>
+   * </ul>
+   * 
+   * @param tablero1a
+   * @param tablero2c
+   * @param skynet
+   * @param coordenadas
+   * @param portaavionesJ1
+   * @param acorazadoJ1
+   * @param destructorJ1
+   * @param cruceroJ1
+   * @param fragataJ1
+   * @param submarinoJ1
+   */
+  public static void disparoIA(String tablero1a[][], int tablero2c[][], IA skynet, int coordenadas [][],
+      Barco portaavionesJ1, Barco acorazadoJ1, Barco destructorJ1, Barco cruceroJ1, Barco fragataJ1, Barco submarinoJ1) {
+    
+    int fila;
+    
+    int columna;
+    
+    int totalValorMasAlto;
+    
+    int indiceCoordenadas;
+    
+    
+    /*
+     * El sistema de disparo de la IA es bastante complejo en algunos momentos, entre sus múltiples acciones 
+     * la IA debe actuar según si:
+     * 
+     * -Si el número de disparos de Skynet son igual o menor que 20 y no ha detectado impacto.
+     * 
+     * -Si el número de disparos de Skynet es mayor que 20 y no ha detectado impacto.
+     * 
+     * -Si ha detectado impacto independientemente del número que haya realizado hasta el momento.
+     * 
+     * 
+     *                                   #############################
+     *                                   
+     * 
+     * Descripción:
+     * 
+     * -Si el número de disparos de Skynet son igual o menor que 20 y no ha detectado impacto:
+     * 
+     *     La primera condición define el comportamiento de la IA al inicio de la partida. Se trata de hacer 
+     *     tiradas aleatorias para cada uno de los ejes hasta lograr una coordenada donde no haya disparado 
+     *     previamente, es decir, donde no encuentre en su propio tablero ni un 0 (agua) ni un -1 (barco).
+     *     
+     *     En caso de detección de barco activa el booleano "heDetectadoBarco" que dará inicio, en su siguiente
+     *     turno, a su mecánica de hundir el barco detectado.
+     *     
+     *     
+     *                                   #############################
+     *     
+     *     
+     * -Si el número de disparos de Skynet es mayor que 20 y no ha detectado impacto:
+     * 
+     *     La segunda condición define el comportamiento de la IA en un punto intermedio de la partida. A partir 
+     *     de este punto el comportamiento de la IA cambia, es decir, deja de realizar tiradas aleatorias sin sentido
+     *     y pasa a un proceso algo más complejo. La IA posee un array llamado tablero2c que es donde almacena los impactos
+     *     que ha realizado en el tablero del jugador humano. De forma que (véase la documentación en la clase IA del método
+     *     reiniciaTablero()), los valores más altos almacenados en ese array serán sinónimo de mayor probabilidad a encontrar
+     *     un barco cuya posición aún es desconocida. Por tanto disparará a una de las coordenadas donde haya un valor
+     *     más alto.
+     *     
+     *     De nuevo, en caso de detección de barco activa el booleano "heDetectadoBarco" que dará inicio, en su siguiente
+     *     turno, a su mecánica de hundir el barco detectado.
+     * 
+     * 
+     *                                   #############################
+     *                                   
+     *                                   
+     * -Si ha detectado impacto independientemente del número que haya realizado hasta el momento:
+     * 
+     *     Aquí viene la mecánica del método de la clase IA (véase la documentación) por el cual la IA tratará
+     *     de determinar en qué posición se encuentra el barco (horizontal o vertical) y, a partir de ahí, 
+     *     en función de las casillas disponibles para disparar disparará o bien arriba, o bien abajo, a la izquierda
+     *     o a la derecha.
+     *     
+     *     De nuevo, en la documentación del método hundirBarco() de la clase IA está totalmente explicado.
+     * 
+     *     
+     * 
+     */
+    if (skynet.getNumDisparos()<=20 && !skynet.getHedetectadoBarco()) {               //Si el número de disparos de Skynet son igual o menor que 20 y no ha detectado impacto.
+      
+      /*
+       * Realiza tirada aleatoria de coordenadas de disparo y repítelas mientras 
+       * que éstas den en una casilla con un 0 (agua) o un -1 (barco).
+       * 
+       */
+      do {
+        
+        fila=(int)(Math.random()*10+1);
+      
+        columna=(int)(Math.random()*10+1);
+      
+      } while(tablero2c[fila][columna]==0 || tablero2c[fila][columna]==-1);
+      
+      
+      /*
+       * Si impacta en agua, haz cambios en el tablero1a[] y en tablero2c[] y mapeaImpacto().
+       * 
+       * Si impacta en barco, haz cambios en el tablero1a[] y en tablero2c[], mapeaImpacto() y, además,
+       *    activa el método:
+       *    
+       *    skynet.setHeDetectadoBarco();
+       *    
+       *    skynet.setCoordImpacto(fila, columna);
+       *    
+       *    skynet.setPaso1();
+       *    
+       */
+      if (tablero1a[fila][columna]=="_|") {
+        
+        System.out.print("\n\nAGUA");
+        
+        tablero1a [fila][columna] = "O|";
+        
+        tablero2c [fila][columna] = 0;
+        
+        skynet.mapeaImpacto(tablero2c, fila, columna);
+        
+        skynet.setNumDisparos();
+        
+      } else if(tablero1a[fila][columna]=="B|") {
+        
+        System.out.print("\n\nTOCADO");
+        
+        tablero1a [fila][columna] = "X|";
+        
+        tablero2c [fila][columna] = -1;
+        
+        compruebaBarcoImpactado(portaavionesJ1, acorazadoJ1, destructorJ1, cruceroJ1, fragataJ1, submarinoJ1, fila, columna, skynet);
+        
+        skynet.mapeaImpacto(tablero2c, fila, columna);
+        
+        skynet.setNumDisparos();
+        
+        skynet.setHeDetectadoBarco();
+        
+        skynet.setCoordImpacto(fila, columna);
+        
+        skynet.setPaso1();
+        
+      }
+      
+      
+    } else if (skynet.getNumDisparos()>20 && !skynet.getHedetectadoBarco()) {               //Si el número de disparos de Skynet es mayor que 20 y no ha detectado impacto.
+      
+      totalValorMasAlto = skynet.sonar(tablero2c, coordenadas);
+      
+      indiceCoordenadas = (int)(Math.random()*(totalValorMasAlto));
+      
+      fila = coordenadas[indiceCoordenadas][0];
+      
+      columna = coordenadas[indiceCoordenadas][1];
+      
+      
+      /*
+       * Si impacta en agua, haz cambios en el tablero1a[] y en tablero2c[].
+       * 
+       * Si impacta en barco, haz cambios en el tablero1a[] y en tablero2c[] y, además,
+       *    activa el método:
+       *    
+       *    mapeaImpacto();
+       *    
+       *    skynet.setHeDetectadoBarco();
+       *    
+       *    skynet.setCoordImpacto(fila, columna);
+       *    
+       *    skynet.setPaso1();
+       *    
+       */
+      if (tablero1a[fila][columna]=="_|") {
+        
+        System.out.print("\n\nAGUA");
+        
+        tablero1a [fila][columna] = "O|";
+        
+        tablero2c [fila][columna] = 0;
+        
+        skynet.mapeaImpacto(tablero2c, fila, columna);
+        
+        skynet.setNumDisparos();
+        
+      } else if(tablero1a[fila][columna]=="B|") {
+        
+        System.out.print("\n\nTOCADO");
+        
+        tablero1a [fila][columna] = "X|";
+        
+        tablero2c [fila][columna] = -1;
+        
+        compruebaBarcoImpactado(portaavionesJ1, acorazadoJ1, destructorJ1, cruceroJ1, fragataJ1, submarinoJ1, fila, columna, skynet);
+        
+        skynet.mapeaImpacto(tablero2c, fila, columna);
+        
+        skynet.setNumDisparos();
+        
+        skynet.setHeDetectadoBarco();
+        
+        skynet.setCoordImpacto(fila, columna);
+        
+        skynet.setPaso1();
+        
+      }
+      
+      
+    } else {
+      
+      skynet.hundirBarco(tablero2c, tablero1a, portaavionesJ1, acorazadoJ1, destructorJ1, cruceroJ1, fragataJ1, submarinoJ1);
+      
+    }
+    
+  }
+  
+  
+  
+  public static void asignaPosicionBarcosIA(String tablero2a[][], IA skynet,
+      Barco portaavionesJ2, Barco acorazadoJ2, Barco destructorJ2, Barco cruceroJ2, Barco fragataJ2, Barco submarinoJ2) {
+    
+    //Variables:
+    int fila;
+    
+    int columna;
+    
+    int verticalidad;
+    
+    
+    
+    
+    //########################     PORTAAVIONES     ########################\\
+    
+    verticalidad = (int)(Math.random()*2+1);
+    
+    //En caso de que sí reseteamos el valor de respuesta y llamamos al método "getVerticalidad()" del objeto:
+    if (verticalidad==2) {
+      
+      portaavionesJ2.setVerticalidad();
+      
+    }
+    
+    
+    /*
+     * A continuación pedimos las coordenadas en las que se va a ubicar el barco, si las coordenadas se salen del tablero
+     * o la posición del barco es incorrecta volveremos a pedirlas:
+     */
+    do {
+      
+      fila = (int)(Math.random()*10+1);
+      
+      columna = (int)(Math.random()*10+1);
+      
+    } while (!skynet.compruebaPosicionBarcoIA(portaavionesJ2, tablero2a, fila, columna));
+    
+    
+    //Si todo ha salido bien llamamos a la función "insertaBarco()" que guardará el barco en el array tablero correspondiente:
+    insertaBarco(portaavionesJ2, tablero2a, fila, columna);
+    
+    
+    //Guardamos las coordenadas de la casilla inicial:
+    portaavionesJ2.setCasillaInicial(fila, columna);
+    
+    
+    
+        
+    //########################     ACORAZADO     ########################\\
+    
+    verticalidad = (int)(Math.random()*2+1);
+    
+    //En caso de que sí reseteamos el valor de respuesta y llamamos al método "getVerticalidad()" del objeto:
+    if (verticalidad==2) {
+      
+      acorazadoJ2.setVerticalidad();
+      
+    }
+    
+    
+    /*
+     * A continuación pedimos las coordenadas en las que se va a ubicar el barco, si las coordenadas se salen del tablero
+     * o la posición del barco es incorrecta volveremos a pedirlas:
+     */
+    do {
+      
+      fila = (int)(Math.random()*10+1);
+      
+      columna = (int)(Math.random()*10+1);
+      
+    } while (!skynet.compruebaPosicionBarcoIA(acorazadoJ2, tablero2a, fila, columna));
+    
+    
+    //Si todo ha salido bien llamamos a la función "insertaBarco()" que guardará el barco en el array tablero correspondiente:
+    insertaBarco(acorazadoJ2, tablero2a, fila, columna);
+    
+    
+    //Guardamos las coordenadas de la casilla inicial:
+    acorazadoJ2.setCasillaInicial(fila, columna);
+    
+    
+    
+    
+    //########################     DESTRUCTOR     ########################\\
+    
+    verticalidad = (int)(Math.random()*2+1);
+    
+    //En caso de que sí reseteamos el valor de respuesta y llamamos al método "getVerticalidad()" del objeto:
+    if (verticalidad==2) {
+      
+      destructorJ2.setVerticalidad();
+      
+    }
+    
+    
+    /*
+     * A continuación pedimos las coordenadas en las que se va a ubicar el barco, si las coordenadas se salen del tablero
+     * o la posición del barco es incorrecta volveremos a pedirlas:
+     */
+    do {
+      
+      fila = (int)(Math.random()*10+1);
+      
+      columna = (int)(Math.random()*10+1);
+      
+    } while (!skynet.compruebaPosicionBarcoIA(destructorJ2, tablero2a, fila, columna));
+    
+    
+    //Si todo ha salido bien llamamos a la función "insertaBarco()" que guardará el barco en el array tablero correspondiente:
+    insertaBarco(destructorJ2, tablero2a, fila, columna);
+    
+    
+    //Guardamos las coordenadas de la casilla inicial:
+    destructorJ2.setCasillaInicial(fila, columna);
+    
+    
+    
+    //########################     CRUCERO     ########################\\
+    
+    verticalidad = (int)(Math.random()*2+1);
+    
+    //En caso de que sí reseteamos el valor de respuesta y llamamos al método "getVerticalidad()" del objeto:
+    if (verticalidad==2) {
+      
+      cruceroJ2.setVerticalidad();
+      
+    }
+    
+    
+    /*
+     * A continuación pedimos las coordenadas en las que se va a ubicar el barco, si las coordenadas se salen del tablero
+     * o la posición del barco es incorrecta volveremos a pedirlas:
+     */
+    do {
+      
+      fila = (int)(Math.random()*10+1);
+      
+      columna = (int)(Math.random()*10+1);
+      
+    } while (!skynet.compruebaPosicionBarcoIA(cruceroJ2, tablero2a, fila, columna));
+    
+    
+    //Si todo ha salido bien llamamos a la función "insertaBarco()" que guardará el barco en el array tablero correspondiente:
+    insertaBarco(cruceroJ2, tablero2a, fila, columna);
+    
+    
+    //Guardamos las coordenadas de la casilla inicial:
+    cruceroJ2.setCasillaInicial(fila, columna);
+    
+    
+    
+    
+    //########################     FRAGATA     ########################\\
+    
+    verticalidad = (int)(Math.random()*2+1);
+    
+    //En caso de que sí reseteamos el valor de respuesta y llamamos al método "getVerticalidad()" del objeto:
+    if (verticalidad==2) {
+      
+      fragataJ2.setVerticalidad();
+      
+    }
+    
+    
+    /*
+     * A continuación pedimos las coordenadas en las que se va a ubicar el barco, si las coordenadas se salen del tablero
+     * o la posición del barco es incorrecta volveremos a pedirlas:
+     */
+    do {
+      
+      fila = (int)(Math.random()*10+1);
+      
+      columna = (int)(Math.random()*10+1);
+      
+    } while (!skynet.compruebaPosicionBarcoIA(fragataJ2, tablero2a, fila, columna));
+    
+    
+    //Si todo ha salido bien llamamos a la función "insertaBarco()" que guardará el barco en el array tablero correspondiente:
+    insertaBarco(fragataJ2, tablero2a, fila, columna);
+    
+    
+    //Guardamos las coordenadas de la casilla inicial:
+    fragataJ2.setCasillaInicial(fila, columna);
+    
+    
+    
+
+    //########################     SUBMARINO     ########################\\
+    
+    verticalidad = (int)(Math.random()*2+1);
+    
+    //En caso de que sí reseteamos el valor de respuesta y llamamos al método "getVerticalidad()" del objeto:
+    if (verticalidad==2) {
+      
+      submarinoJ2.setVerticalidad();
+      
+    }
+    
+    
+    /*
+     * A continuación pedimos las coordenadas en las que se va a ubicar el barco, si las coordenadas se salen del tablero
+     * o la posición del barco es incorrecta volveremos a pedirlas:
+     */
+    do {
+      
+      fila = (int)(Math.random()*10+1);
+      
+      columna = (int)(Math.random()*10+1);
+      
+    } while (!skynet.compruebaPosicionBarcoIA(submarinoJ2, tablero2a, fila, columna));
+    
+    
+    //Si todo ha salido bien llamamos a la función "insertaBarco()" que guardará el barco en el array tablero correspondiente:
+    insertaBarco(submarinoJ2, tablero2a, fila, columna);
+    
+    
+    //Guardamos las coordenadas de la casilla inicial:
+    submarinoJ2.setCasillaInicial(fila, columna);
     
   }
   
