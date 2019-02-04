@@ -61,9 +61,9 @@ public class Barco {
    * <li>Las casillas que ocupa el barco, por ejemplo: 5.</li>
    * <li>El jugador al que pertenece el barco, por ejemplo: 1.</li>
    * </ul>
-   * @param nombre
-   * @param casillas
-   * @param jugador
+   * @param nombre    Nombre del barco.
+   * @param casillas  Número de casillas del barco.
+   * @param jugador   Jugador al que pertenece.
    */
   public Barco(String nombre, int casillas, int jugador) {
     
@@ -85,7 +85,7 @@ public class Barco {
   /**
    * Devuelve el número de casillas del barco.
    * 
-   * @return
+   * @return  Número entero de casillas actuales (pre/post impacto).
    */
   public int getCasillas() {
     
@@ -101,7 +101,8 @@ public class Barco {
    * <li>Si es "true" el barco se pintará vertical.</li>
    * <li>Si es "false" el barco se pintará horizontal.</li>
    * </ul>
-   * @return
+   * 
+   * @return   Verdadero o falso (posición vertical).
    */
   public boolean getVerticalidad() {
     
@@ -147,6 +148,8 @@ public class Barco {
   /**
    * Retorna el valor de la posición invertida
    * 
+   * @return   Verdadero o falso (posición inversa).
+   * 
    */
   public boolean getPosicionInvertida() {
     
@@ -158,8 +161,8 @@ public class Barco {
   /**
    * Almacena la que se considera la primera casilla del barco, la casilla inicial.
    * 
-   * @param fila
-   * @param columna
+   * @param fila      Número fila (entero).
+   * @param columna   Número columna (entero).
    */
   public void setCasillaInicial(int fila, int columna) {
     
@@ -201,9 +204,9 @@ public class Barco {
    * 
    * En caso de impacto retornamos verdadero. En caso contrario falso.
    * 
-   * @param fila
-   * @param columna
-   * @return
+   * @param fila      Número fila (entero).
+   * @param columna   Número columna (entero)
+   * @return          Verdadero o falso.
    */
   public boolean compruebaImpacto(int fila, int columna) {
     

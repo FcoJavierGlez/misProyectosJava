@@ -26,10 +26,14 @@ package barcos;
  * <li>hundirBarco()</li>
  * <li>compruebaBarcoImpactadoIA()</li>
  * <li>compruebaPosicionBarcoIA()</li>
+ * <li>mensajeCoordenadasIA()</li>
  * </ul>
  * 
  * @author Francisco Javier González Sabariego
- * @version 1.0 || Fecha: 02/02/2019
+ * @version 1.1 || Fecha: 04/02/2019
+ * 
+ *    Versión 1.0 (Fecha: 02/02/2019): Creación de la IA.
+ *    Versión 1.1 (Fecha: 04/02/2019): Añadido método por el cual la IA imprime las coordenadas de su disparo en pantalla.
  *
  */
 public class IA {
@@ -86,7 +90,7 @@ public class IA {
   /**
    * Retorna el valor actual de números de disparos de la IA.
    * 
-   * @return
+   * @return   Número entero de disparos hechos por la IA.
    */
   public int getNumDisparos() {
     
@@ -135,7 +139,7 @@ public class IA {
   /**
    * Retorna el valor actual del modo "barco detectado".
    * 
-   * @return
+   * @return   Verdadero o falso (si la IA  ha impactado en un barco y, por tanto, lo ha detectado).
    */
   public boolean getHedetectadoBarco() {
     
@@ -149,8 +153,8 @@ public class IA {
    * 
    * Y hace una copia en las coordenadas del puntero.
    * 
-   * @param fila
-   * @param columna
+   * @param fila      Número fila (entero).
+   * @param columna   Número columna (entero).
    */
   public void setCoordImpacto(int fila, int columna) {
     
@@ -275,7 +279,7 @@ public class IA {
    * 0330553000<br><br>
    * 
    * 
-   * @param tablero2c
+   * @param tablero2c   Tablero secundario de la IA.
    */
   public void reiniciaTableroIA(int tablero2c[][]) {
     
@@ -372,9 +376,9 @@ public class IA {
    * que hagan contacto con las casillas recién convertidas a 0 (por ser agua con una 
    * fiabilidad del 100%).<br><br>
    * 
-   * @param tablero2c
-   * @param fila
-   * @param columna
+   * @param tablero2c   Tablero secundario de la IA.
+   * @param fila        Número fila (entero).
+   * @param columna     Número columna (entero).
    */
   public void mapeaImpacto(int tablero2c[][], int fila, int columna) {
     
@@ -408,8 +412,8 @@ public class IA {
    * Este método se encarga de rastrear el número con el valor más alto almacenado 
    * en el array del mapeado de la IA, el array tablero2c [].
    * 
-   * @param tablero2c
-   * @return
+   * @param tablero2c   Tablero secundario de la IA.
+   * @return            Número (entero) más alto encontrado en el tablero secundario de la IA.
    */
   public int buscaNumeroMasAlto(int tablero2c[][]) {
     
@@ -458,9 +462,9 @@ public class IA {
    *  se encuentren los barcos enemigos aún no revelados, el objeto de esto es que la máquina encuentre 
    *  esos mismos claros haciendo uso de la lógica explicada en reiniciaTablero().<br><br>
    * 
-   * @param tablero2c
-   * @param numerMasAlto
-   * @return
+   * @param tablero2c       Tablero secundario de la IA.
+   * @param coordenadas     Coordenadas almacenadas donde puede ocultar un barco (tras haber realizado el método sonar()) 
+   * @return                Número (entero) con la cantidad de veces que ha encontrado el número más alto en el tablero secundario de la IA.
    */
   public int sonar(int tablero2c[][], int coordenadas[][]) {
     
@@ -499,8 +503,8 @@ public class IA {
    * 
    * Este método necesita hacer uso del método mapeaImpacto().
    * 
-   * @param tablero2c
-   * @param barco
+   * @param tablero2c     Tablero secundario de la IA.
+   * @param barco         Instancia de la clase Barco.
    */
   public void rodeaConAgua(int tablero2c[][], Barco barco) {
     
@@ -664,20 +668,14 @@ public class IA {
    * las variables que impiden que entremos de nuevo en este método hasta el descubrimiento de otro barco.<br><br>
    * 
    * 
-   * @param tablero2c
-   * @param tablero1a
-   * @param paso1
-   * @param paso2
-   * @param coordImpacto
-   * @param coordPuntero
-   * @param compruebaDireccion
-   * @param sigueDisparando
-   * @param portaavionesJ1
-   * @param acorazadoJ1
-   * @param destructorJ1
-   * @param cruceroJ1
-   * @param fragataJ1
-   * @param submarinoJ1
+   * @param tablero2c        Tablero secundario de la IA.
+   * @param tablero1a        Tablero principal del jugador 1.
+   * @param portaavionesJ1   Instancia de la clase Barco, "portaaviones" del jugador 1.
+   * @param acorazadoJ1      Instancia de la clase Barco, "acorazado" del jugador 1.
+   * @param destructorJ1     Instancia de la clase Barco, "destructor" del jugador 1.
+   * @param cruceroJ1        Instancia de la clase Barco, "crucero" del jugador 1.
+   * @param fragataJ1        Instancia de la clase Barco, "fragata" del jugador 1.
+   * @param submarinoJ1      Instancia de la clase Barco, "submarino" del jugador 1.
    */
   public void hundirBarco(int tablero2c[][], String tablero1a [][], Barco portaavionesJ1, Barco acorazadoJ1, Barco destructorJ1, Barco cruceroJ1, Barco fragataJ1, Barco submarinoJ1) {
     
@@ -816,6 +814,8 @@ public class IA {
             
             tablero2c[coordPuntero[0][0]-1][coordPuntero[0][1]] = 0;
             
+            mensajeCoordenadasIA(coordPuntero[0][0]-1, coordPuntero[0][1]);
+            
             System.out.print("\n\nAGUA");
             
             mapeaImpacto(tablero2c, (coordPuntero[0][0]-1), coordPuntero[0][1]);     
@@ -831,6 +831,8 @@ public class IA {
             tablero1a[coordPuntero[0][0]-1][coordPuntero[0][1]] = "X|";
             
             tablero2c[coordPuntero[0][0]-1][coordPuntero[0][1]] = -1;
+            
+            mensajeCoordenadasIA(coordPuntero[0][0]-1, coordPuntero[0][1]);
             
             System.out.print("\n\nTOCADO");
             
@@ -861,6 +863,8 @@ public class IA {
             
             tablero2c[coordPuntero[0][0]][coordPuntero[0][1]+1] = 0;
             
+            mensajeCoordenadasIA(coordPuntero[0][0], coordPuntero[0][1]+1);
+            
             System.out.print("\n\nAGUA");
             
             this.setNumDisparos();
@@ -876,6 +880,8 @@ public class IA {
             tablero1a[coordPuntero[0][0]][coordPuntero[0][1]+1] = "X|";
             
             tablero2c[coordPuntero[0][0]][coordPuntero[0][1]+1] = -1;
+            
+            mensajeCoordenadasIA(coordPuntero[0][0], coordPuntero[0][1]+1);
             
             System.out.print("\n\nTOCADO");
             
@@ -906,6 +912,8 @@ public class IA {
             
             tablero2c[coordPuntero[0][0]+1][coordPuntero[0][1]] = 0;
             
+            mensajeCoordenadasIA(coordPuntero[0][0]+1, coordPuntero[0][1]);
+            
             System.out.print("\n\nAGUA");
             
             this.setNumDisparos();
@@ -921,6 +929,8 @@ public class IA {
             tablero1a[coordPuntero[0][0]+1][coordPuntero[0][1]] = "X|";
             
             tablero2c[coordPuntero[0][0]+1][coordPuntero[0][1]] = -1;
+            
+            mensajeCoordenadasIA(coordPuntero[0][0]+1, coordPuntero[0][1]);
             
             System.out.print("\n\nTOCADO");
             
@@ -951,6 +961,8 @@ public class IA {
             
             tablero2c[coordPuntero[0][0]][coordPuntero[0][1]-1] = 0;
             
+            mensajeCoordenadasIA(coordPuntero[0][0], coordPuntero[0][1]-1);
+            
             System.out.print("\n\nAGUA");
             
             this.setNumDisparos();
@@ -966,6 +978,8 @@ public class IA {
             tablero1a[coordPuntero[0][0]][coordPuntero[0][1]-1] = "X|";
             
             tablero2c[coordPuntero[0][0]][coordPuntero[0][1]-1] = -1;
+            
+            mensajeCoordenadasIA(coordPuntero[0][0], coordPuntero[0][1]-1);
             
             System.out.print("\n\nTOCADO");
             
@@ -1041,6 +1055,8 @@ public class IA {
             
             tablero2c[coordPuntero[0][0]+1][coordPuntero[0][1]] = -1;
             
+            mensajeCoordenadasIA(coordPuntero[0][0]+1, coordPuntero[0][1]);
+            
             System.out.print("\n\nTOCADO");
             
             coordPuntero[0][0]+=1;                                         //Sobreescribimos la nueva coordenada en el puntero, como referencia para el siguiente disparo.
@@ -1065,6 +1081,8 @@ public class IA {
             
             tablero2c[coordPuntero[0][0]-1][coordPuntero[0][1]] = 0;   
             
+            mensajeCoordenadasIA(coordPuntero[0][0]-1, coordPuntero[0][1]);
+            
             System.out.print("\n\nAGUA");
             
             this.setNumDisparos();
@@ -1087,6 +1105,8 @@ public class IA {
             tablero1a[coordPuntero[0][0]-1][coordPuntero[0][1]] = "X|";
             
             tablero2c[coordPuntero[0][0]-1][coordPuntero[0][1]] = -1;
+            
+            mensajeCoordenadasIA(coordPuntero[0][0]-1, coordPuntero[0][1]);
             
             System.out.print("\n\nTOCADO");
             
@@ -1128,6 +1148,8 @@ public class IA {
             
             tablero2c[coordPuntero[0][0]][coordPuntero[0][1]-1] = -1;
             
+            mensajeCoordenadasIA(coordPuntero[0][0], coordPuntero[0][1]-1);
+            
             System.out.print("\n\nTOCADO");
             
             coordPuntero[0][1]-=1;                                         //Sobreescribimos la nueva coordenada en el puntero, como referencia para el siguiente disparo.
@@ -1152,6 +1174,8 @@ public class IA {
             
             tablero2c[coordPuntero[0][0]][coordPuntero[0][1]+1] = 0;
             
+            mensajeCoordenadasIA(coordPuntero[0][0], coordPuntero[0][1]+1);
+            
             System.out.print("\n\nAGUA");
             
             this.setNumDisparos();
@@ -1174,6 +1198,8 @@ public class IA {
             tablero1a[coordPuntero[0][0]][coordPuntero[0][1]+1] = "X|";
             
             tablero2c[coordPuntero[0][0]][coordPuntero[0][1]+1] = -1;
+            
+            mensajeCoordenadasIA(coordPuntero[0][0], coordPuntero[0][1]+1);
             
             System.out.print("\n\nTOCADO");
             
@@ -1215,6 +1241,8 @@ public class IA {
             
             tablero2c[coordPuntero[0][0]-1][coordPuntero[0][1]] = -1;
             
+            mensajeCoordenadasIA(coordPuntero[0][0]-1, coordPuntero[0][1]);
+            
             System.out.print("\n\nTOCADO");
             
             coordPuntero[0][0]-=1;                                         //Sobreescribimos la nueva coordenada en el puntero, como referencia para el siguiente disparo.
@@ -1239,6 +1267,8 @@ public class IA {
             
             tablero2c[coordPuntero[0][0]+1][coordPuntero[0][1]] = 0;   
             
+            mensajeCoordenadasIA(coordPuntero[0][0]+1, coordPuntero[0][1]);
+            
             System.out.print("\n\nAGUA");
             
             this.setNumDisparos();
@@ -1261,6 +1291,8 @@ public class IA {
             tablero1a[coordPuntero[0][0]+1][coordPuntero[0][1]] = "X|";
             
             tablero2c[coordPuntero[0][0]+1][coordPuntero[0][1]] = -1;
+            
+            mensajeCoordenadasIA(coordPuntero[0][0]+1, coordPuntero[0][1]);
             
             System.out.print("\n\nTOCADO");
             
@@ -1302,6 +1334,8 @@ public class IA {
             
             tablero2c[coordPuntero[0][0]][coordPuntero[0][1]+1] = -1;
             
+            mensajeCoordenadasIA(coordPuntero[0][0], coordPuntero[0][1]+1);
+            
             System.out.print("\n\nTOCADO");
             
             coordPuntero[0][1]+=1;                                         //Sobreescribimos la nueva coordenada en el puntero, como referencia para el siguiente disparo.
@@ -1326,6 +1360,8 @@ public class IA {
             
             tablero2c[coordPuntero[0][0]][coordPuntero[0][1]-1] = 0;
             
+            mensajeCoordenadasIA(coordPuntero[0][0], coordPuntero[0][1]-1);
+            
             System.out.print("\n\nAGUA");
             
             this.setNumDisparos();
@@ -1348,6 +1384,8 @@ public class IA {
             tablero1a[coordPuntero[0][0]][coordPuntero[0][1]-1] = "X|";
             
             tablero2c[coordPuntero[0][0]][coordPuntero[0][1]-1] = -1;
+            
+            mensajeCoordenadasIA(coordPuntero[0][0], coordPuntero[0][1]-1);
             
             System.out.print("\n\nTOCADO");
             
@@ -1378,15 +1416,15 @@ public class IA {
    * Método que emplea la IA del juego para determinar cuál de los barcos ha impactado
    * y si se ha hundido (para reiniciar el sistema de combate).
    * 
-   * @param portaavionesJ1
-   * @param acorazadoJ1
-   * @param destructorJ1
-   * @param cruceroJ1
-   * @param fragataJ1
-   * @param submarinoJ1
-   * @param fila
-   * @param columna
-   * @param tablero2c
+   * @param portaavionesJ1   Instancia de la clase Barco, "portaaviones" del jugador 1.
+   * @param acorazadoJ1      Instancia de la clase Barco, "acorazado" del jugador 1.
+   * @param destructorJ1     Instancia de la clase Barco, "destructor" del jugador 1.
+   * @param cruceroJ1        Instancia de la clase Barco, "crucero" del jugador 1.
+   * @param fragataJ1        Instancia de la clase Barco, "fragata" del jugador 1.
+   * @param submarinoJ1      Instancia de la clase Barco, "submarino" del jugador 1.
+   * @param fila             Número (entero) de fila.
+   * @param columna          Número (entero) de columna.
+   * @param tablero2c        Tablero secundario de la IA.
    */
   public void compruebaBarcoImpactadoIA(Barco portaavionesJ1, Barco acorazadoJ1, Barco destructorJ1,
       Barco cruceroJ1, Barco fragataJ1, Barco submarinoJ1, int fila, int columna, int tablero2c[][]) {
@@ -1497,11 +1535,11 @@ public class IA {
    * 
    * En caso de que no sean aptas volverá a pedir las coordenadas.
    * 
-   * @param barco
-   * @param tablero
-   * @param fila
-   * @param columna
-   * @return
+   * @param barco     Instancia de la clase Barco.
+   * @param tablero   Tablero donde se desea comprobar la posición.
+   * @param fila      Número (entero) de fila.
+   * @param columna   Número (entero) de columna.
+   * @return          Verdadero o falso.
    */
   public boolean compruebaPosicionBarcoIA(Barco barco, String [][] tablero, int fila, int columna) {
     
@@ -1630,6 +1668,65 @@ public class IA {
     }
     
     return salida;
+    
+  }
+  
+  
+  /**
+   * Cuando la IA dispara llama a esta función para imprimir por pantalla 
+   * las coordenadas a las que va dirigido el disparo.
+   * 
+   * @param fila      Número (entero) de fila.
+   * @param columna   Número (entero) de columna.
+   */
+  public void mensajeCoordenadasIA(int fila, int columna) {
+    
+    String salidaFila;
+    
+    switch (fila) {
+    
+      case 1:
+        salidaFila = "A";
+        break;
+        
+      case 2:
+        salidaFila = "B";
+        break;
+        
+      case 3:
+        salidaFila = "C";
+        break;
+        
+      case 4:
+        salidaFila = "D";
+        break;
+        
+      case 5:
+        salidaFila = "E";
+        break;
+        
+      case 6:
+        salidaFila = "F";
+        break;
+        
+      case 7:
+        salidaFila = "G";
+        break;
+        
+      case 8:
+        salidaFila = "H";
+        break;
+        
+      case 9:
+        salidaFila = "I";
+        break;
+        
+      default:
+        salidaFila = "J";
+    }
+    
+    
+    System.out.print("\n\nSkynet dispara a las coordenadas: " + salidaFila + " - " + columna);
     
   }
   

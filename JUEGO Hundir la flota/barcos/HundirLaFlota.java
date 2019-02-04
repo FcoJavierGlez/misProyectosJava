@@ -36,8 +36,13 @@ import java.util.Scanner;
  * <li>esperaSegundos()</li>
  * <li>borradoPantalla()</li>
  * <li>leeMenu()</li>
+ * </ul>
+ * 
+ * Además de los métodos de la clase IA citados a continuación:
+ * <ul>
  * <li>disparoIA()</li>
  * <li>asignaPosicionesBarcosIA()</li>
+ * <li>mensajeCoordenadasIA()</li>
  * </ul>
  * 
  * <br><br>Además es necesario importar la clase Barco para crear 6 instancias para el Jugador 1 y otras 6 para el Jugador 2 que harán uso de sus respectivos métodos 
@@ -56,10 +61,15 @@ import java.util.Scanner;
  * 
  * @author Francisco Javier González Sabariego.
  * 
- * @version 2.0  //  Fecha: 28/01/2019
+ * @version 2.1  //  Fecha: 04/02/2019
  * 
  *    Versión 1.0 (Fecha: 28/01/2019): Salida del juego con el modo para 2 jugadores.
  *    Versión 2.0 (Fecha: 03/02/2019): Añadida la IA para el modo 1 jugador.
+ *    Versión 2.1 (Fecha: 04/02/2019): Añadidas las coordenadas del disparo de la IA 
+ *                                     (para facilitar al jugador la localización del 
+ *                                     disparo en su tablero). También se han reducido 
+ *                                     los tiempos de transición entre turnos en el 
+ *                                     modo de 1 jugador.
  * 
  */
 public class HundirLaFlota {
@@ -191,9 +201,10 @@ public class HundirLaFlota {
           
           System.out.println("\n\nREINICIANDO JUEGO.");
           
-          //Llamamos al método reiniciarJuego():
-          reiniciarJuego(tablero1a, tablero1b, tablero2a, tablero2b, 
-              portaavionesJ1, acorazadoJ1, destructorJ1, cruceroJ1, fragataJ1, submarinoJ1, 
+          //Llamamos al método reiniciaTableros() y reiniciarJuego():
+          reiniciaTableros(tablero1a, tablero1b, tablero2a, tablero2b);
+          
+          reiniciarJuego(portaavionesJ1, acorazadoJ1, destructorJ1, cruceroJ1, fragataJ1, submarinoJ1, 
               portaavionesJ2, acorazadoJ2, destructorJ2, cruceroJ2, fragataJ2, submarinoJ2);
           
           skynet.reiniciaTableroIA(tablero2c);
@@ -236,8 +247,6 @@ public class HundirLaFlota {
           borraPantalla();
           
           asignaPosicionBarcosIA(tablero2a, skynet, portaavionesJ2, acorazadoJ2, destructorJ2, cruceroJ2, fragataJ2, submarinoJ2);
-          
-          imprimeTableroJ2(tablero2a, tablero2b);
           
           
           //Una vez asignados los barcos en su sitio se decide quién empieza el juego:
@@ -326,7 +335,7 @@ public class HundirLaFlota {
               
               System.out.println("\n\nEl juego se reiniciará en breve.");
               
-              esperaSegundos(5);
+              esperaSegundos(3);
               
             }
             
@@ -347,9 +356,9 @@ public class HundirLaFlota {
                         
             
             //Avisamos del cambio de turno y esperamos 5 segundos a reliazar dicho cambio:
-            System.out.println("\n\nTurno de Skynet comienza en 5 segundos.");
+            System.out.println("\n\nTurno de Skynet comenzará en breve.");
             
-            esperaSegundos(5);
+            esperaSegundos(2);
             
           }
         
@@ -366,7 +375,7 @@ public class HundirLaFlota {
           
           disparoIA(tablero1a, tablero2c, skynet, coordenadas, portaavionesJ1, acorazadoJ1, destructorJ1, cruceroJ1, fragataJ1, submarinoJ1);
           
-          esperaSegundos(5);
+          esperaSegundos(3);
           
           
           //Comprobamos si la IA ha ganado:
@@ -399,7 +408,7 @@ public class HundirLaFlota {
               
               System.out.println("\n\nEl juego se reiniciará en breve.");
               
-              esperaSegundos(5);
+              esperaSegundos(3);
               
             }
             
@@ -416,9 +425,9 @@ public class HundirLaFlota {
                         
             
             //Avisamos del cambio de turno y esperamos 5 segundos a reliazar dicho cambio:
-            System.out.println("\n\nTurno del jugador 1 comienza en 5 segundos.");
+            System.out.println("\n\nTurno del jugador 1.");
             
-            esperaSegundos(5);
+            esperaSegundos(1);
             
           }
           
@@ -453,9 +462,10 @@ public class HundirLaFlota {
           
           System.out.println("\n\nREINICIANDO JUEGO.");
           
-          //Llamamos al método reiniciarJuego():
-          reiniciarJuego(tablero1a, tablero1b, tablero2a, tablero2b, 
-              portaavionesJ1, acorazadoJ1, destructorJ1, cruceroJ1, fragataJ1, submarinoJ1, 
+          //Llamamos al método reiniciaTableros() y reiniciarJuego():
+          reiniciaTableros(tablero1a, tablero1b, tablero2a, tablero2b);
+          
+          reiniciarJuego(portaavionesJ1, acorazadoJ1, destructorJ1, cruceroJ1, fragataJ1, submarinoJ1, 
               portaavionesJ2, acorazadoJ2, destructorJ2, cruceroJ2, fragataJ2, submarinoJ2);
           
           
@@ -773,8 +783,10 @@ public class HundirLaFlota {
   /**
    * Este método se encarga de resetear los tableros de juego.
    * 
-   * @param tablero1a
-   * @param tablero1b
+   * @param tablero1a Tablero principal del jugador 1
+   * @param tablero1b Tablero secundario del jugador 1.
+   * @param tablero2a Tablero principal del jugador 2.
+   * @param tablero2b Tablero secundario del jugador 2.
    */
   public static void reiniciaTableros(String tablero1a [][], String tablero1b [][], String tablero2a [][], String tablero2b [][]) {
     
@@ -832,8 +844,8 @@ for (int i=0; i<=11; i++) {
    * <li>En el otro, "Impactos del Jugador 1", tenemos los impactos que el jugador 1 ha realizado en el tablero contrario.</li>
    * </ul>
    * 
-   * @param tablero1a
-   * @param tablero1b
+   * @param tablero1a Tablero principal del jugador 1
+   * @param tablero1b Tablero secundario del jugador 1.
    */
   public static void imprimeTableroJ1(String tablero1a [][], String tablero1b[][]) {
     
@@ -997,8 +1009,8 @@ for (int i=0; i<=11; i++) {
    * <li>En el otro, "Impactos del Jugador 2", tenemos los impactos que el jugador 2 ha realizado en el tablero contrario.</li>
    * </ul>
    * 
-   * @param tablero2a
-   * @param tablero2b
+   * @param tablero2a Tablero principal del jugador 2.
+   * @param tablero2b Tablero secundario del jugador 2.
    */
   public static void imprimeTableroJ2(String tablero2a [][], String tablero2b[][]) {
     
@@ -1157,8 +1169,8 @@ for (int i=0; i<=11; i++) {
   /**
    * Este método comprueba si la letra que ha eligido el usuario es correcta dentro del rango [A-Z] y retornará un booleano.
    * 
-   * @param fila
-   * @return
+   * @param fila Letra de la fila que introduce el usuario.
+   * @return Verdadero o falso.
    */
   public static boolean compruebaFila(String fila) {
     
@@ -1191,8 +1203,8 @@ for (int i=0; i<=11; i++) {
   /**
    * Este método comprueba si el número que ha eligido el usuario es correcto dentro del rango [1-10] y retornará un booleano.
    * 
-   * @param columna
-   * @return
+   * @param columna Número de columna introducido por el usuario.
+   * @return Verdadero o falso.
    */
   public static boolean compruebaColumna(int columna) {
     
@@ -1209,7 +1221,7 @@ for (int i=0; i<=11; i++) {
   /**
    * Reasigna el valor String de la fila a un valor entero para la coordenada de la fila.
    * 
-   * @return
+   * @return Conversión a número de la fila para usarlo como coordenada.
    */
   public static int transformaFila(String fila) {
     
@@ -1270,7 +1282,7 @@ for (int i=0; i<=11; i++) {
    * 
    * Una vez verificada la coordenada retorna el String de la misma.
    * 
-   * @return
+   * @return Devuelve la posición de la fila en forma de String.
    */
   public static String pideCoordenadaFila() {
     
@@ -1301,7 +1313,7 @@ for (int i=0; i<=11; i++) {
    * 
    * Una vez verificada la coordenada retorna el entero de la misma.
    * 
-   * @return
+   * @return Devuelve el número de columna en forma de entero.
    */
   public static int pideCoordenadaColumna() {
     
@@ -1332,11 +1344,11 @@ for (int i=0; i<=11; i++) {
    * 
    * En caso de que no sean aptas volverá a pedir las coordenadas.
    * 
-   * @param barco
-   * @param tablero
-   * @param fila
-   * @param columna
-   * @return
+   * @param barco    Instancia de la clase Barco al que queremos comprobar su posición.
+   * @param tablero  El tablero en el que vamos a comprobar la posición del barco.
+   * @param fila     Coordenada fila en forma de entero.
+   * @param columna  Coordenada columna en forma de entero.
+   * @return         Verdadero o falso.
    */
   public static boolean compruebaPosicionBarco(Barco barco, String [][] tablero, int fila, int columna) {
     
@@ -1480,10 +1492,10 @@ for (int i=0; i<=11; i++) {
    * En caso de que las coordenadas sean correctas el barco se guarda en el array del tablero correspondiente. Este método necesita hacer uso
    * del método "compruebaPosicion()".
    * 
-   * @param barco
-   * @param tablero
-   * @param fila
-   * @param columna
+   * @param barco    Instancia de la clase Barco al que queremos comprobar su posición.
+   * @param tablero  El tablero en el que vamos a comprobar la posición del barco.
+   * @param fila     Coordenada fila en forma de entero.
+   * @param columna  Coordenada columna en forma de entero.
    */
   public static void insertaBarco(Barco barco, String tablero [][], int fila, int columna) {
     
@@ -1556,14 +1568,14 @@ for (int i=0; i<=11; i++) {
    * <li>imprimeTableroJ1()</li>
    * </ul>
    * 
-   * @param tablero1a
-   * @param tablero1b
-   * @param portaavionesJ1
-   * @param acorazadoJ1
-   * @param destructorJ1
-   * @param cruceroJ1
-   * @param fragataJ1
-   * @param submarinoJ1
+   * @param tablero1a       Tablero principal del jugador 1
+   * @param tablero1b       Tablero secundario del jugador 1.
+   * @param portaavionesJ1  Instancia de la clase Barco, "portaaviones" del jugador 1.
+   * @param acorazadoJ1     Instancia de la clase Barco, "acorazado" del jugador 1.
+   * @param destructorJ1    Instancia de la clase Barco, "destructor" del jugador 1.
+   * @param cruceroJ1       Instancia de la clase Barco, "crucero" del jugador 1.
+   * @param fragataJ1       Instancia de la clase Barco, "fragata" del jugador 1.
+   * @param submarinoJ1     Instancia de la clase Barco, "submarino" del jugador 1.
    */
   public static void asignaPosicionBarcosJ1(String tablero1a[][], String tablero1b[][], 
       Barco portaavionesJ1, Barco acorazadoJ1, Barco destructorJ1, Barco cruceroJ1, Barco fragataJ1, Barco submarinoJ1) {
@@ -1903,14 +1915,14 @@ for (int i=0; i<=11; i++) {
    * <li>imprimeTableroJ1()</li>
    * </ul>
    * 
-   * @param tablero2a
-   * @param tablero2b
-   * @param portaavionesJ2
-   * @param acorazadoJ2
-   * @param destructorJ2
-   * @param cruceroJ2
-   * @param fragataJ2
-   * @param submarinoJ2
+   * @param tablero2a       Tablero principal del jugador 2.
+   * @param tablero2b       Tablero secundario del jugador 2.
+   * @param portaavionesJ2  Instancia de la clase Barco, "portaaviones" del jugador 2.   
+   * @param acorazadoJ2     Instancia de la clase Barco, "acorazado" del jugador 2.
+   * @param destructorJ2    Instancia de la clase Barco, "destructor" del jugador 2.
+   * @param cruceroJ2       Instancia de la clase Barco, "crucero" del jugador 2.
+   * @param fragataJ2       Instancia de la clase Barco, "fragata" del jugador 2.
+   * @param submarinoJ2     Instancia de la clase Barco, "submarino" del jugador 2.
    */
   public static void asignaPosicionBarcosJ2(String tablero2a[][], String tablero2b[][], 
       Barco portaavionesJ2, Barco acorazadoJ2, Barco destructorJ2, Barco cruceroJ2, Barco fragataJ2, Barco submarinoJ2) {
@@ -2240,10 +2252,10 @@ for (int i=0; i<=11; i++) {
   /**
    * Valida las coordenadas insertadas para lanzar un disparo. De esta forma evita disparar donde previamente se haya disparado.
    * 
-   * @param tablero
-   * @param fila
-   * @param columna
-   * @return
+   * @param tablero   Tablero en el que se va a validar el disparo realizado.
+   * @param fila      Posición fila.
+   * @param columna   Posición columna.
+   * @return          Verdadero o falso.
    */
   public static boolean validaDisparo(String tablero[][], int fila, int columna) {
     
@@ -2295,15 +2307,15 @@ for (int i=0; i<=11; i++) {
    * <li>setHaSalidoMensajeHundido()</li>
    * </ul>
    * 
-   * @param tablero2a
-   * @param tablero1b
-   * @param skynet
-   * @param portaavionesJ2
-   * @param acorazadoJ2
-   * @param destructorJ2
-   * @param cruceroJ2
-   * @param fragataJ2
-   * @param submarinoJ2
+   * @param tablero2a         Tablero principal del jugador 2.
+   * @param tablero1b         Tablero secundario del jugador 1.
+   * @param skynet            Instancia de la clase IA (para modificar el mensaje de hundido en caso de ser el modo 1 jugador).
+   * @param portaavionesJ2    Instancia de la clase Barco, "portaaviones" del jugador 2.   
+   * @param acorazadoJ2       Instancia de la clase Barco, "acorazado" del jugador 2.
+   * @param destructorJ2      Instancia de la clase Barco, "destructor" del jugador 2.
+   * @param cruceroJ2         Instancia de la clase Barco, "crucero" del jugador 2.
+   * @param fragataJ2         Instancia de la clase Barco, "fragata" del jugador 2.
+   * @param submarinoJ2       Instancia de la clase Barco, "submarino" del jugador 2.
    */
   public static void disparoJ1(String tablero2a[][], String tablero1b[][], IA skynet, 
       Barco portaavionesJ2, Barco acorazadoJ2, Barco destructorJ2, Barco cruceroJ2, Barco fragataJ2, Barco submarinoJ2) {
@@ -2405,14 +2417,14 @@ for (int i=0; i<=11; i++) {
    * <li>setHaSalidoMensajeHundido()</li>
    * </ul>
    * 
-   * @param tablero1a
-   * @param tablero2b
-   * @param portaavionesJ1
-   * @param acorazadoJ1
-   * @param destructorJ1
-   * @param cruceroJ1
-   * @param fragataJ1
-   * @param submarinoJ1
+   * @param tablero1a        Tablero principal del jugador 1.
+   * @param tablero2b        Tablero secundario del jugador 2.
+   * @param portaavionesJ1   Instancia de la clase Barco, "portaaviones" del jugador 1.
+   * @param acorazadoJ1      Instancia de la clase Barco, "acorazado" del jugador 1.
+   * @param destructorJ1     Instancia de la clase Barco, "destructor" del jugador 1.
+   * @param cruceroJ1        Instancia de la clase Barco, "crucero" del jugador 1.
+   * @param fragataJ1        Instancia de la clase Barco, "fragata" del jugador 1.
+   * @param submarinoJ1      Instancia de la clase Barco, "submarino" del jugador 1.
    */
   public static void disparoJ2(String tablero1a[][], String tablero2b[][], IA skynet, 
       Barco portaavionesJ1, Barco acorazadoJ1, Barco destructorJ1, Barco cruceroJ1, Barco fragataJ1, Barco submarinoJ1) {
@@ -2485,87 +2497,88 @@ for (int i=0; i<=11; i++) {
    * Este método detecta qúe barco ha sido impactado y si ha sido hundido. 
    * (Este método es para 2 jugadores), la IA usa otro incluído en la clase IA.
    * 
-   * @param portaavionesJ1
-   * @param acorazadoJ1
-   * @param destructorJ1
-   * @param cruceroJ1
-   * @param fragataJ1
-   * @param submarinoJ1
-   * @param fila
-   * @param columna
+   * @param portaaviones  Instancia de la clase Barco.
+   * @param acorazado     Instancia de la clase Barco.
+   * @param destructor    Instancia de la clase Barco.
+   * @param crucero       Instancia de la clase Barco.
+   * @param fragata       Instancia de la clase Barco.
+   * @param submarino     Instancia de la clase Barco.
+   * @param fila          Número de fila.
+   * @param columna       Número de columna.
+   * @param skynet        Instancia de la clase IA.
    */
-  public static void compruebaBarcoImpactado(Barco portaavionesJ1, Barco acorazadoJ1, Barco destructorJ1,
-      Barco cruceroJ1, Barco fragataJ1, Barco submarinoJ1, int fila, int columna, IA skynet) {
+  public static void compruebaBarcoImpactado(Barco portaaviones, Barco acorazado, Barco destructor,
+      Barco crucero, Barco fragata, Barco submarino, int fila, int columna, IA skynet) {
     
-    if (portaavionesJ1.compruebaImpacto(fila, columna)) {
+    if (portaaviones.compruebaImpacto(fila, columna)) {
       
-      portaavionesJ1.tocado();
+      portaaviones.tocado();
       
-      if (portaavionesJ1.hundidoBarco && !portaavionesJ1.haSalidoMensajeHundido) {      //Si lo hundimos:
+      if (portaaviones.hundidoBarco && !portaaviones.haSalidoMensajeHundido) {      //Si lo hundimos:
         
-        portaavionesJ1.mensajeHundido(skynet);                                              //Imprimos el mensaje de que ha sido hundido.
+        portaaviones.mensajeHundido(skynet);                                              //Imprimos el mensaje de que ha sido hundido.
         
-        portaavionesJ1.setHaSalidoMensajeHundido();                                     //Y activamos el booleano de que este mensaje ya ha salido para que no se repita.
-        
-      }
-      
-    } else if (acorazadoJ1.compruebaImpacto(fila, columna)) {
-      
-      acorazadoJ1.tocado();
-      
-      if (acorazadoJ1.hundidoBarco && !acorazadoJ1.haSalidoMensajeHundido) {            //Si lo hundimos:
-        
-        acorazadoJ1.mensajeHundido(skynet);                                                   //Imprimos el mensaje de que ha sido hundido.
-        
-        acorazadoJ1.setHaSalidoMensajeHundido();                                        //Y activamos el booleano de que este mensaje ya ha salido para que no se repita.
+        portaaviones.setHaSalidoMensajeHundido();                                     //Y activamos el booleano de que este mensaje ya ha salido para que no se repita.
         
       }
       
-    } else if (destructorJ1.compruebaImpacto(fila, columna)) {
+    } else if (acorazado.compruebaImpacto(fila, columna)) {
       
-      destructorJ1.tocado();
+      acorazado.tocado();
       
-      if (destructorJ1.hundidoBarco && !destructorJ1.haSalidoMensajeHundido) {          //Si lo hundimos:
+      if (acorazado.hundidoBarco && !acorazado.haSalidoMensajeHundido) {            //Si lo hundimos:
         
-        destructorJ1.mensajeHundido(skynet);                                                  //Imprimos el mensaje de que ha sido hundido.
+        acorazado.mensajeHundido(skynet);                                                   //Imprimos el mensaje de que ha sido hundido.
         
-        destructorJ1.setHaSalidoMensajeHundido();                                       //Y activamos el booleano de que este mensaje ya ha salido para que no se repita.
-        
-      }
-      
-    } else if (cruceroJ1.compruebaImpacto(fila, columna)) {
-      
-      cruceroJ1.tocado();
-      
-      if (cruceroJ1.hundidoBarco && !cruceroJ1.haSalidoMensajeHundido) {                //Si lo hundimos:
-        
-        cruceroJ1.mensajeHundido(skynet);                                                     //Imprimos el mensaje de que ha sido hundido.
-        
-        cruceroJ1.setHaSalidoMensajeHundido();                                          //Y activamos el booleano de que este mensaje ya ha salido para que no se repita.
+        acorazado.setHaSalidoMensajeHundido();                                        //Y activamos el booleano de que este mensaje ya ha salido para que no se repita.
         
       }
       
-    } else if (fragataJ1.compruebaImpacto(fila, columna)) {
+    } else if (destructor.compruebaImpacto(fila, columna)) {
       
-      fragataJ1.tocado();
+      destructor.tocado();
       
-      if (fragataJ1.hundidoBarco && !fragataJ1.haSalidoMensajeHundido) {                //Si lo hundimos:
+      if (destructor.hundidoBarco && !destructor.haSalidoMensajeHundido) {          //Si lo hundimos:
         
-        fragataJ1.mensajeHundido(skynet);                                                     //Imprimos el mensaje de que ha sido hundido.
+        destructor.mensajeHundido(skynet);                                                  //Imprimos el mensaje de que ha sido hundido.
         
-        fragataJ1.setHaSalidoMensajeHundido();                                          //Y activamos el booleano de que este mensaje ya ha salido para que no se repita.
+        destructor.setHaSalidoMensajeHundido();                                       //Y activamos el booleano de que este mensaje ya ha salido para que no se repita.
         
       }
       
-    } else if (submarinoJ1.compruebaImpacto(fila, columna)) {
+    } else if (crucero.compruebaImpacto(fila, columna)) {
       
-      submarinoJ1.tocado();
+      crucero.tocado();
       
-      if (submarinoJ1.hundidoBarco && !submarinoJ1.haSalidoMensajeHundido) {            //Si lo hundimos:
+      if (crucero.hundidoBarco && !crucero.haSalidoMensajeHundido) {                //Si lo hundimos:
         
-        submarinoJ1.mensajeHundido(skynet);                                                   //Imprimos el mensaje de que ha sido hundido.
+        crucero.mensajeHundido(skynet);                                                     //Imprimos el mensaje de que ha sido hundido.
         
-        submarinoJ1.setHaSalidoMensajeHundido();                                        //Y activamos el booleano de que este mensaje ya ha salido para que no se repita.
+        crucero.setHaSalidoMensajeHundido();                                          //Y activamos el booleano de que este mensaje ya ha salido para que no se repita.
+        
+      }
+      
+    } else if (fragata.compruebaImpacto(fila, columna)) {
+      
+      fragata.tocado();
+      
+      if (fragata.hundidoBarco && !fragata.haSalidoMensajeHundido) {                //Si lo hundimos:
+        
+        fragata.mensajeHundido(skynet);                                                     //Imprimos el mensaje de que ha sido hundido.
+        
+        fragata.setHaSalidoMensajeHundido();                                          //Y activamos el booleano de que este mensaje ya ha salido para que no se repita.
+        
+      }
+      
+    } else if (submarino.compruebaImpacto(fila, columna)) {
+      
+      submarino.tocado();
+      
+      if (submarino.hundidoBarco && !submarino.haSalidoMensajeHundido) {            //Si lo hundimos:
+        
+        submarino.mensajeHundido(skynet);                                                   //Imprimos el mensaje de que ha sido hundido.
+        
+        submarino.setHaSalidoMensajeHundido();                                        //Y activamos el booleano de que este mensaje ya ha salido para que no se repita.
         
       }
       
@@ -2577,7 +2590,7 @@ for (int i=0; i<=11; i++) {
   /**
    * Devuelve un entero entre [1-100].
    * 
-   * @return
+   * @return  Número entero [1-100].
    */
   public static int tiradaAleatoria() {
     
@@ -2599,7 +2612,7 @@ for (int i=0; i<=11; i++) {
   /**
    * Preguntamos al jugador si desea volver a jugar y retornamos un boolean.
    * 
-   * @return
+   * @return  Verdadero o falso.
    */
   public static boolean preguntaReinicio() {
     
@@ -2646,30 +2659,21 @@ for (int i=0; i<=11; i++) {
    * <li>setReinicia()</li>
    * </ul>
    * 
-   * @param tablero1a
-   * @param tablero1b
-   * @param tablero2a
-   * @param tablero2b
-   * @param portaavionesJ1
-   * @param acorazadoJ1
-   * @param destructorJ1
-   * @param cruceroJ1
-   * @param fragataJ1
-   * @param submarinoJ1
-   * @param portaavionesJ2
-   * @param acorazadoJ2
-   * @param destructorJ2
-   * @param cruceroJ2
-   * @param fragataJ2
-   * @param submarinoJ2
+   * @param portaavionesJ1    Instancia de la clase Barco, "portaaviones" del jugador 1.
+   * @param acorazadoJ1       Instancia de la clase Barco, "acorazado" del jugador 1.
+   * @param destructorJ1      Instancia de la clase Barco, "destructor" del jugador 1.
+   * @param cruceroJ1         Instancia de la clase Barco, "crucero" del jugador 1.
+   * @param fragataJ1         Instancia de la clase Barco, "fragata" del jugador 1.
+   * @param submarinoJ1       Instancia de la clase Barco, "submarino" del jugador 1.
+   * @param portaavionesJ2    Instancia de la clase Barco, "portaaviones" del jugador 2.   
+   * @param acorazadoJ2       Instancia de la clase Barco, "acorazado" del jugador 2.
+   * @param destructorJ2      Instancia de la clase Barco, "destructor" del jugador 2.
+   * @param cruceroJ2         Instancia de la clase Barco, "crucero" del jugador 2.
+   * @param fragataJ2         Instancia de la clase Barco, "fragata" del jugador 2.
+   * @param submarinoJ2       Instancia de la clase Barco, "submarino" del jugador 2.
    */
-  public static void reiniciarJuego(String tablero1a [][], String tablero1b [][], String tablero2a [][], String tablero2b [][], 
-      Barco portaavionesJ1, Barco acorazadoJ1, Barco destructorJ1, Barco cruceroJ1, Barco fragataJ1, Barco submarinoJ1, 
+  public static void reiniciarJuego(Barco portaavionesJ1, Barco acorazadoJ1, Barco destructorJ1, Barco cruceroJ1, Barco fragataJ1, Barco submarinoJ1, 
       Barco portaavionesJ2, Barco acorazadoJ2, Barco destructorJ2, Barco cruceroJ2, Barco fragataJ2, Barco submarinoJ2) {
-    
-    
-    //Reiniciamos tableros:
-    reiniciaTableros(tablero1a, tablero1b, tablero2a, tablero2b);
     
         
     //Reseteamos a los valores por defecto d elos barcos del Jugador 1:
@@ -2705,7 +2709,7 @@ for (int i=0; i<=11; i++) {
   /**
    * Hace esperar al cambio de turno.
    * 
-   * @param segundos
+   * @param segundos Número entero de segundos que debe pausarse el juego.
    */
   public static void esperaSegundos(int segundos) {
     try {
@@ -2734,15 +2738,22 @@ for (int i=0; i<=11; i++) {
   /**
    * Lee la entrada del menu.
    * 
-   * @return
+   * @return   Devuelve un entero.
    */
   public static int leeMenu() {
     
     int menu;
     
-    Scanner s = new Scanner(System.in);
     
-    menu = s.nextInt();
+    do {
+      
+      System.out.print("\n\nElija una opción del menú:");
+      
+      Scanner s = new Scanner(System.in);      
+      menu = s.nextInt();
+      
+    } while (menu<1 || menu>3);
+    
     
     return menu;
     
@@ -2800,18 +2811,19 @@ for (int i=0; i<=11; i++) {
    * <li>setHeDetectadoBarco()</li>
    * <li>setCoordImpacto()</li>
    * <li>paso1()</li>
+   * <li>mensajeCoordenadasIA()</li>
    * </ul>
    * 
-   * @param tablero1a
-   * @param tablero2c
-   * @param skynet
-   * @param coordenadas
-   * @param portaavionesJ1
-   * @param acorazadoJ1
-   * @param destructorJ1
-   * @param cruceroJ1
-   * @param fragataJ1
-   * @param submarinoJ1
+   * @param tablero1a         Tablero principal del jugador 1.
+   * @param tablero2c         Tablero secundario de la IA (no necesita usar otro, salvo par aubicar sus barcos al inicio).
+   * @param skynet            Instancia de la clase IA.
+   * @param coordenadas       Array donde almacenamos las coordenadas dónde se puede ocultar un barco tras haber usado el método sonar().
+   * @param portaavionesJ1    Instancia de la clase Barco, "portaaviones" del jugador 1.
+   * @param acorazadoJ1       Instancia de la clase Barco, "acorazado" del jugador 1.
+   * @param destructorJ1      Instancia de la clase Barco, "destructor" del jugador 1.
+   * @param cruceroJ1         Instancia de la clase Barco, "crucero" del jugador 1.
+   * @param fragataJ1         Instancia de la clase Barco, "fragata" del jugador 1.
+   * @param submarinoJ1       Instancia de la clase Barco, "submarino" del jugador 1.
    */
   public static void disparoIA(String tablero1a[][], int tablero2c[][], IA skynet, int coordenadas [][],
       Barco portaavionesJ1, Barco acorazadoJ1, Barco destructorJ1, Barco cruceroJ1, Barco fragataJ1, Barco submarinoJ1) {
@@ -2914,6 +2926,8 @@ for (int i=0; i<=11; i++) {
        */
       if (tablero1a[fila][columna]=="_|") {
         
+        skynet.mensajeCoordenadasIA(fila, columna);
+        
         System.out.print("\n\nAGUA");
         
         tablero1a [fila][columna] = "O|";
@@ -2925,6 +2939,8 @@ for (int i=0; i<=11; i++) {
         skynet.setNumDisparos();
         
       } else if(tablero1a[fila][columna]=="B|") {
+        
+        skynet.mensajeCoordenadasIA(fila, columna);
         
         System.out.print("\n\nTOCADO");
         
@@ -2975,6 +2991,8 @@ for (int i=0; i<=11; i++) {
        */
       if (tablero1a[fila][columna]=="_|") {
         
+        skynet.mensajeCoordenadasIA(fila, columna);
+        
         System.out.print("\n\nAGUA");
         
         tablero1a [fila][columna] = "O|";
@@ -2986,6 +3004,8 @@ for (int i=0; i<=11; i++) {
         skynet.setNumDisparos();
         
       } else if(tablero1a[fila][columna]=="B|") {
+        
+        skynet.mensajeCoordenadasIA(fila, columna);
         
         System.out.print("\n\nTOCADO");
         
@@ -3017,7 +3037,18 @@ for (int i=0; i<=11; i++) {
   }
   
   
-  
+  /**
+   * Ubica los barcos de la IA en su tablero correspondiente tablero2a[][].
+   * 
+   * @param tablero2a         Tablero principal de la IA.
+   * @param skynet            Instancia de la clase IA.
+   * @param portaavionesJ2    Instancia de la clase Barco, "portaaviones" del jugador 2.   
+   * @param acorazadoJ2       Instancia de la clase Barco, "acorazado" del jugador 2.
+   * @param destructorJ2      Instancia de la clase Barco, "destructor" del jugador 2.
+   * @param cruceroJ2         Instancia de la clase Barco, "crucero" del jugador 2.
+   * @param fragataJ2         Instancia de la clase Barco, "fragata" del jugador 2.
+   * @param submarinoJ2       Instancia de la clase Barco, "submarino" del jugador 2.
+   */
   public static void asignaPosicionBarcosIA(String tablero2a[][], IA skynet,
       Barco portaavionesJ2, Barco acorazadoJ2, Barco destructorJ2, Barco cruceroJ2, Barco fragataJ2, Barco submarinoJ2) {
     
