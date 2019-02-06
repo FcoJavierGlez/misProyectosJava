@@ -884,8 +884,8 @@ for (int i=0; i<=11; i++) {
           break;
         case 9: System.out.print("\nI|");
           break;
-        case 10: System.out.print("\nJ|");
-          break;      
+        default: System.out.print("\nJ|");
+        
       }
       
       
@@ -936,8 +936,7 @@ for (int i=0; i<=11; i++) {
             break;
           case 9: System.out.print("I                         I|");
             break;
-          case 10: System.out.print("J                         J|");
-            break;
+          default: System.out.print("J                         J|");
         
           }
           
@@ -982,8 +981,7 @@ for (int i=0; i<=11; i++) {
             break;
           case 9: System.out.print("I");
             break;
-          case 10: System.out.print("J");
-            break;
+          default: System.out.print("J");
         
           }
           
@@ -1049,8 +1047,8 @@ for (int i=0; i<=11; i++) {
           break;
         case 9: System.out.print("\nI|");
           break;
-        case 10: System.out.print("\nJ|");
-          break;      
+        default: System.out.print("\nJ|");
+        
       }
       
       
@@ -1101,8 +1099,7 @@ for (int i=0; i<=11; i++) {
             break;
           case 9: System.out.print("I                         I|");
             break;
-          case 10: System.out.print("J                         J|");
-            break;
+          default: System.out.print("J                         J|");
         
           }
           
@@ -1147,8 +1144,7 @@ for (int i=0; i<=11; i++) {
             break;
           case 9: System.out.print("I");
             break;
-          case 10: System.out.print("J");
-            break;
+          default: System.out.print("J");
         
           }
           
@@ -1221,6 +1217,7 @@ for (int i=0; i<=11; i++) {
   /**
    * Reasigna el valor String de la fila a un valor entero para la coordenada de la fila.
    * 
+   * @param fila    Entrada de la letra correspondiente a una fila.
    * @return Conversión a número de la fila para usarlo como coordenada.
    */
   public static int transformaFila(String fila) {
@@ -1266,9 +1263,8 @@ for (int i=0; i<=11; i++) {
         numeroFila = 9;
         break;
         
-      case "J":        
+      default:        
         numeroFila = 10;
-        break;    
     
     }
     
@@ -2419,6 +2415,7 @@ for (int i=0; i<=11; i++) {
    * 
    * @param tablero1a        Tablero principal del jugador 1.
    * @param tablero2b        Tablero secundario del jugador 2.
+   * @param skynet           Instancia de la clase IA.
    * @param portaavionesJ1   Instancia de la clase Barco, "portaaviones" del jugador 1.
    * @param acorazadoJ1      Instancia de la clase Barco, "acorazado" del jugador 1.
    * @param destructorJ1     Instancia de la clase Barco, "destructor" del jugador 1.
@@ -2730,7 +2727,7 @@ for (int i=0; i<=11; i++) {
       new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
     } catch (Exception e) {}
     
-    System.out.println("\n\n\n\n\n\n\n\n"); //Introduzco varios saltos de línea para centrar la iamgen en la consola
+    System.out.println("\n\n\n\n\n\n\n\n"); //Introduzco varios saltos de línea para centrar la imagen en la consola
     
   }
   

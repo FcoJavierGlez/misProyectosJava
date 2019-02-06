@@ -9,7 +9,7 @@ package barcos;
  * La clase se compone de los siguientes métodos:
  * 
  * <ul>
- * <li>Barco() -> El constructor "Barco" que acepta por parámetros: el nombre del tipo de barco, las casillas que lo componen y el jugador al que pertenece. </li>
+ * <li>Barco() -&gt; El constructor "Barco" que acepta por parámetros: el nombre del tipo de barco, las casillas que lo componen y el jugador al que pertenece. </li>
  * <li>getCasillas()</li>
  * <li>getVerticalidad()</li>
  * <li>setVerticalidad()</li>
@@ -299,6 +299,8 @@ public class Barco {
   
   /**
    * Muestra el mensaje de que el barco está hundido.
+   * 
+   * @param skynet    Instancia de la clase IA.
    */
   public void mensajeHundido(IA skynet) {
     

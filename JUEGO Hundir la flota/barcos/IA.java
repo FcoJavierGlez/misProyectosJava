@@ -229,7 +229,7 @@ public class IA {
    * 000000000000 <br><br>
    * 
    * Recuerde que, tanto los tableros de los jugadores humanos como los de la máquina son de 12x12, 
-   * es decir, que los 0 que rodean las casillas con valor inicial > 0 son márgenes inexistentes para 
+   * es decir, que los 0 que rodean las casillas con valor inicial &gt; 0 son márgenes inexistentes para 
    * el usuario, pero necesarios para transferir las coordenadas correctamente y con comodidad del 
    * tablero1a [] (principal del jugador humano) al tablero2c [] (el que nos ocupa).<br><br>
    * 
@@ -251,7 +251,7 @@ public class IA {
    * 069999999960<br>
    * 069999999960<br>
    * 069988899960<br>
-   * 069980899960 <- Vea el cero en la casilla [5][5] como está rodeado de números 8.<br>
+   * 069980899960 &lt;- Vea el cero en la casilla [5][5] como está rodeado de números 8.<br>
    * 069988899960<br>
    * 069999999960<br>
    * 069999999960<br>
